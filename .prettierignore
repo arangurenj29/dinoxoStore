@@ -1,0 +1,9 @@
+.astro/
+.wrangler/
+brand/
+docs/
+node_modules/
+output/
+outputs/
+pnpm-lock.yaml
+tmp/

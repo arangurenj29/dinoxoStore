@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 132" role="img" aria-labelledby="dinoxostore-logo-monochrome-title dinoxostore-logo-monochrome-desc">
+  <title id="dinoxostore-logo-monochrome-title">Logo monocromático Dinoxo Store</title>
+  <desc id="dinoxostore-logo-monochrome-desc">Identidad original de Dinoxo Store: letra D angular integrada con una cabeza de dinosaurio.</desc>
+  <g transform="translate(6 14)">
+    <circle cx="52" cy="52" r="48" fill="none" stroke="#000000" stroke-width="3"/>
+    <path d="M31 18 H59 C71 18 80 27 80 40 V58 C80 70 71 79 59 79 H55 V68 H59 C65 68 69 64 69 58 V40 C69 34 65 29 59 29 H42 L31 24 Z M31 29 L48 35 L55 42 L64 47 L68 54 L61 61 L55 59 L51 65 L47 59 L42 63 L37 57 V79 H25 V29 Z" fill="#000000"/>
+    <path d="M44 42 L52 44 L47 50 L42 47 Z" fill="#FFFFFF"/>
+  </g>
+  <g font-family="Arial" font-size="62" letter-spacing="-2">
+    <text x="128" y="84" fill="#000000" font-weight="600">dinoxo</text>
+    <circle cx="323" cy="78" r="5" fill="#000000"/>
+    <text x="335" y="84" fill="#000000" font-weight="400">Store</text>
+  </g>
+</svg>

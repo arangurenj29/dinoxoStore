@@ -1,0 +1,31 @@
+{
+  "name": "dinoxostore",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm build:preview",
+    "build:preview": "pnpm --filter @dinoxo/storefront build",
+    "build:production": "pnpm --filter @dinoxo/storefront build:production",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
+    "test": "pnpm test:unit",
+    "test:static:preview": "EXPECTED_DEPLOY_ENV=preview node --test apps/*/tests/*.static.test.mjs",
+    "test:static:production": "EXPECTED_DEPLOY_ENV=production node --test apps/*/tests/*.static.test.mjs",
+    "test:unit": "node --test tests/*.test.mjs apps/*/tests/*.unit.test.mjs",
+    "typecheck": "pnpm --filter @dinoxo/storefront typecheck",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build:preview && pnpm test:static:preview && pnpm build:production && pnpm test:static:production && python3 brand/tools/validate_brand.py"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.8.0",
+    "eslint-plugin-astro": "3.1.0",
+    "prettier": "3.9.6",
+    "prettier-plugin-astro": "0.14.1",
+    "typescript-eslint": "8.66.0"
+  }
+}

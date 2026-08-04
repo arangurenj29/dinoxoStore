@@ -1,0 +1,57 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  storefront:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install frozen dependencies
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: corepack pnpm format:check
+
+      - name: Lint
+        run: corepack pnpm lint
+
+      - name: Typecheck
+        run: corepack pnpm typecheck
+
+      - name: Unit tests
+        run: corepack pnpm test:unit
+
+      - name: Validate brand assets
+        run: python3 brand/tools/validate_brand.py
+
+      - name: Build preview
+        run: corepack pnpm build:preview
+
+      - name: Verify preview artifacts
+        run: corepack pnpm test:static:preview
+
+      - name: Build production
+        run: corepack pnpm build:production
+
+      - name: Verify production artifacts
+        run: corepack pnpm test:static:production
