@@ -46,7 +46,7 @@ Use that PNG as the only logo layer above these images. Do not recolor, trace, s
 
 ## Logo-overlay caveat
 
-The primary logo is intentionally the approved raster artwork and includes its own midnight background; it is not a transparent cutout. Place it only on dark midnight/graphite surfaces where its edge blends naturally. If isolated artwork is required later, create a **separate raster-mask derivative** and retain `dinoxostore-logo-primary.png` unchanged as the source of truth. Do not replace it with the simplified SVG logo.
+The primary logo is intentionally the approved raster artwork and remains the source of truth. The hero web may use the documented alpha derivative `../logo/dinoxostore-logo-isolated-v1.png` to remove the rectangular outer background; it does not replace or modify `dinoxostore-logo-primary.png`. Do not replace either raster asset with a simplified SVG logo.
 
 ## Accessibility and implementation
 

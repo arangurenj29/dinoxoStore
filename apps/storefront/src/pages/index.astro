@@ -1,24 +1,26 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import CatalogPreview from '../components/sections/CatalogPreview.astro';
+import Faq from '../components/sections/Faq.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import Hero from '../components/sections/Hero.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import ProofStrip from '../components/sections/ProofStrip.astro';
+import Trust from '../components/sections/Trust.astro';
 ---
 
 <BaseLayout>
-  <header>
-    <a class="brand" href="/" aria-label="Dinoxo Store, inicio">Dinoxo Store</a>
-  </header>
-
+  <SiteHeader />
   <main>
-    <section aria-labelledby="foundation-title">
-      <p class="eyebrow">Tienda gamer independiente</p>
-      <h1 id="foundation-title">Dinoxo Store</h1>
-      <p>
-        Estamos preparando una experiencia clara para elegir contenido digital y
-        recibir atención directa.
-      </p>
-    </section>
+    <Hero />
+    <ProofStrip />
+    <HowItWorks />
+    <CatalogPreview />
+    <Trust />
+    <Faq />
+    <FinalCta />
   </main>
-
-  <footer>
-    <small>&copy; {new Date().getFullYear()} Dinoxo Store</small>
-  </footer>
+  <SiteFooter />
 </BaseLayout>

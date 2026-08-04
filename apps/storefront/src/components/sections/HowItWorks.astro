@@ -1,0 +1,51 @@
+---
+import Icon from '../core/Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+
+const steps = [
+  {
+    icon: 'gift-card',
+    title: 'Elige',
+    description: 'Revisa la plataforma, región y denominación que necesitas.',
+  },
+  {
+    icon: 'whatsapp-contact',
+    title: 'Confirma',
+    description: 'Escríbenos para confirmar disponibilidad y condiciones.',
+  },
+  {
+    icon: 'instant-delivery',
+    title: 'Recibe',
+    description: 'Coordinamos la entrega digital después de tu confirmación.',
+  },
+] as const;
+---
+
+<section
+  id="como-funciona"
+  class="site-section how-it-works"
+  aria-labelledby="how-title"
+>
+  <div class="site-section__inner">
+    <SectionHeading
+      eyebrow="Proceso simple"
+      headingId="how-title"
+      title="Tres pasos, información clara."
+      description="Sin procesos ocultos: primero confirmamos los datos que importan para tu compra."
+    />
+    <ol class="step-list">
+      {
+        steps.map((step, index) => (
+          <li class="step-item">
+            <span class="step-index">0{index + 1}</span>
+            <Icon name={step.icon} alt="" />
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

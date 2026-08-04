@@ -1,0 +1,18 @@
+---
+import { whatsappHref } from '../content/contact';
+import ButtonLink from './core/ButtonLink.astro';
+import Icon from './core/Icon.astro';
+---
+
+<header class="site-header">
+  <nav class="site-nav" aria-label="Navegación principal">
+    <a class="site-wordmark" href="#inicio">Dinoxo Store</a>
+    <div class="site-nav__links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#productos">Productos</a>
+    </div>
+    <ButtonLink href={whatsappHref} label="Hablar ahora" variant="secondary">
+      <Icon slot="icon" name="whatsapp-contact" alt="" />
+    </ButtonLink>
+  </nav>
+</header>

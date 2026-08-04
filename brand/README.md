@@ -16,12 +16,17 @@ Este directorio es la **fuente operativa de identidad** para web, redes y piezas
 |---|---|
 | Manual práctico | `brand-book-v1.md` |
 | Logo maestro raster | `assets/logo/dinoxostore-logo-primary.png` |
+| Derivado raster aislado para hero web | `assets/logo/dinoxostore-logo-isolated-v1.png` |
 | Iconografía funcional SVG | `assets/icons/` |
 | Tokens agnósticos | `tokens/brand.tokens.json` |
 | Variables CSS | `tokens/brand.css` |
 | Fondos promocionales raster | `assets/visuals/` |
 
 Los antiguos ensayos vectoriales del logo se conservan únicamente como historial en `archive/legacy-vector-logo/`. Están fuera del flujo operativo y NO pueden importarse, publicarse ni usarse para regenerar la marca.
+
+### Derivado aislado para web
+
+`assets/logo/dinoxostore-logo-isolated-v1.png` es un derivado raster con canal alfa para componer el medallón sobre el hero web. No sustituye al PNG maestro, no se edita manualmente y no autoriza una versión SVG del logo. La fuente de verdad sigue siendo `assets/logo/dinoxostore-logo-primary.png`.
 
 ## Iconos incluidos
 

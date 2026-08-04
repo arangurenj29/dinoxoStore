@@ -1,0 +1,16 @@
+---
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<img
+  class={className}
+  src="/brand/dinoxostore-logo-isolated-v1-640.webp"
+  width="640"
+  height="640"
+  alt="Dinoxo Store"
+  decoding="async"
+/>

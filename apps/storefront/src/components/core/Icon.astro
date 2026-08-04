@@ -1,0 +1,24 @@
+---
+interface Props {
+  alt: string;
+  name:
+    | 'gift-card'
+    | 'help'
+    | 'instant-delivery'
+    | 'payment'
+    | 'region'
+    | 'secure-purchase'
+    | 'whatsapp-contact';
+}
+
+const { alt, name } = Astro.props;
+---
+
+<img
+  class="icon"
+  src={`/brand/icons/${name}.svg`}
+  width="24"
+  height="24"
+  alt={alt}
+  aria-hidden={alt ? undefined : 'true'}
+/>

@@ -1,0 +1,26 @@
+---
+const socialLinks = [
+  { label: 'Instagram', href: 'https://www.instagram.com/dinoxo.store' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@dinoxo.store' },
+  { label: 'Linktree', href: 'https://linktr.ee/dinoxo.store' },
+] as const;
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p>Dinoxo Store</p>
+    <nav aria-label="Redes oficiales">
+      {
+        socialLinks.map((socialLink) => (
+          <a href={socialLink.href} target="_blank" rel="noreferrer">
+            {socialLink.label}
+          </a>
+        ))
+      }
+    </nav>
+    <small
+      >El catálogo, la disponibilidad y las condiciones se confirmarán antes de
+      cada compra.</small
+    >
+  </div>
+</footer>

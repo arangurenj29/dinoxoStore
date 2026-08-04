@@ -1,0 +1,45 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+
+const entries = [
+  {
+    question: '¿Cómo sé si un producto está disponible?',
+    answer:
+      'Escríbenos por WhatsApp. Antes de confirmar, revisamos la disponibilidad, región y condiciones del producto.',
+  },
+  {
+    question: '¿Los productos mostrados ya están a la venta?',
+    answer:
+      'Por ahora son tarjetas de demostración. El catálogo real se gestionará desde el módulo de administración.',
+  },
+  {
+    question: '¿Qué información necesito antes de escribir?',
+    answer:
+      'Indícanos la plataforma, región y denominación que buscas. Así podremos orientarte con más claridad.',
+  },
+] as const;
+---
+
+<section
+  id="preguntas"
+  class="site-section faq-section"
+  aria-labelledby="faq-title"
+>
+  <div class="site-section__inner faq-layout">
+    <SectionHeading
+      eyebrow="Preguntas frecuentes"
+      headingId="faq-title"
+      title="Respuestas antes de que las necesites."
+    />
+    <div class="faq-list">
+      {
+        entries.map((entry) => (
+          <details>
+            <summary>{entry.question}</summary>
+            <p>{entry.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

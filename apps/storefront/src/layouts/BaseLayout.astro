@@ -22,12 +22,17 @@ const title = titleOverride ?? metadata.title;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="robots" content={metadata.robots} />
+    <link
+      rel="icon"
+      type="image/webp"
+      href="/brand/dinoxostore-logo-isolated-v1-320.webp"
+    />
     {
       metadata.canonicalUrl && (
         <link rel="canonical" href={metadata.canonicalUrl} />
