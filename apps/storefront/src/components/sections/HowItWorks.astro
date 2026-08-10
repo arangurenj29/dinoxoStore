@@ -36,7 +36,11 @@ const steps = [
     <ol class="step-list">
       {
         steps.map((step, index) => (
-          <li class="step-item">
+          <li
+            class="step-item"
+            data-reveal="step"
+            style={`--reveal-delay: ${index * 90}ms`}
+          >
             <span class="step-index">0{index + 1}</span>
             <Icon name={step.icon} alt="" />
             <div>

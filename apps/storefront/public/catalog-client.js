@@ -30,11 +30,13 @@ function createIcon() {
   return icon;
 }
 
-function createCard(product) {
+function createCard(product, index) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const variant = variants[0];
   const card = document.createElement('article');
   card.className = 'catalog-card';
+  card.dataset.reveal = 'card';
+  card.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 80}ms`);
 
   const status = document.createElement('p');
   status.className = 'catalog-card__status';
@@ -90,6 +92,87 @@ function showCatalogState(grid, message) {
   grid.replaceChildren(state);
 }
 
+function initMotion() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  document.documentElement.classList.add('motion-ready');
+  const revealSelector = '[data-reveal]';
+  const revealElements = (root) => root.querySelectorAll(revealSelector);
+
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+    );
+
+    const observeReveal = (root) => {
+      for (const element of revealElements(root)) {
+        if (element.dataset.revealObserved) continue;
+        element.dataset.revealObserved = 'true';
+        revealObserver.observe(element);
+      }
+    };
+
+    observeReveal(document);
+    const mutationObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (!(node instanceof Element)) continue;
+          if (node.matches(revealSelector)) {
+            node.dataset.revealObserved = 'true';
+            revealObserver.observe(node);
+          }
+          observeReveal(node);
+        }
+      }
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+  } else {
+    document.documentElement.classList.remove('motion-ready');
+  }
+
+  const header = document.querySelector('.site-header');
+  const hero = document.querySelector('.hero');
+  let framePending = false;
+  const updateScrollEffects = () => {
+    const scrollY = window.scrollY;
+    header?.classList.toggle('is-scrolled', scrollY > 24);
+    if (hero instanceof HTMLElement) {
+      const progress = Math.min(scrollY / Math.max(hero.offsetHeight, 1), 1);
+      hero.style.setProperty('--hero-progress', progress.toFixed(3));
+    }
+    framePending = false;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (framePending) return;
+      framePending = true;
+      window.requestAnimationFrame(updateScrollEffects);
+    },
+    { passive: true },
+  );
+  updateScrollEffects();
+
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('pointermove', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const card = event.target.closest('.catalog-card');
+      if (!(card instanceof HTMLElement)) return;
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty('--pointer-x', `${event.clientX - bounds.left}px`);
+      card.style.setProperty('--pointer-y', `${event.clientY - bounds.top}px`);
+    });
+  }
+}
+
 async function loadCatalog() {
   const grid = document.querySelector('[data-catalog-grid]');
   if (!grid) return;
@@ -122,7 +205,9 @@ async function loadCatalog() {
       return;
     }
     const fragment = document.createDocumentFragment();
-    for (const product of products) fragment.append(createCard(product));
+    for (const [index, product] of products.entries()) {
+      fragment.append(createCard(product, index));
+    }
     grid.dataset.catalogState = 'ready';
     grid.replaceChildren(fragment);
   } catch {
@@ -133,4 +218,5 @@ async function loadCatalog() {
   }
 }
 
+initMotion();
 void loadCatalog();

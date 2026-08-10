@@ -33,8 +33,8 @@ const entries = [
     />
     <div class="faq-list">
       {
-        entries.map((entry) => (
-          <details>
+        entries.map((entry, index) => (
+          <details data-reveal="faq" style={`--reveal-delay: ${index * 70}ms`}>
             <summary>{entry.question}</summary>
             <p>{entry.answer}</p>
           </details>

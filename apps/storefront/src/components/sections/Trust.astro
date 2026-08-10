@@ -37,8 +37,11 @@ const commitments = [
     />
     <ul class="commitment-list">
       {
-        commitments.map((commitment) => (
-          <li>
+        commitments.map((commitment, index) => (
+          <li
+            data-reveal="commitment"
+            style={`--reveal-delay: ${index * 90}ms`}
+          >
             <Icon name={commitment.icon} alt="" />
             <div>
               <h3>{commitment.title}</h3>
