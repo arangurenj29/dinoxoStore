@@ -1,0 +1,6 @@
+{
+  "production": {
+    "supabaseUrl": "https://yvbrvclbqmvxxtfehxxp.supabase.co",
+    "supabasePublishableKey": "sb_publishable_5Osn2s-bQqLKeGm0BZ5ayA_Efh7gLjP"
+  }
+}

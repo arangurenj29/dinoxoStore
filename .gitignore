@@ -1,0 +1,30 @@
+.DS_Store
+
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Build and framework output
+dist/
+.astro/
+.wrangler/
+coverage/
+apps/storefront/public/_headers
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Generated previews, QA exports and temporary work
+output/
+outputs/
+tmp/
+brand/tools/__pycache__/
+*.py[cod]
+
+# Editors
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,58 @@
+/* Dinoxo Store Brand Tokens v1. Generated from brand.tokens.json. */
+:root {
+  --dx-color-midnight-950: #030A12;
+  --dx-color-midnight-900: #071526;
+  --dx-color-navy-800: #101B2A;
+  --dx-color-graphite-700: #263443;
+  --dx-color-slate-600: #526273;
+  --dx-color-slate-500: #405164;
+  --dx-color-slate-300: #B5C2CF;
+  --dx-color-slate-200: #C8D3DD;
+  --dx-color-silver-200: #D8E1EA;
+  --dx-color-silver-100: #EEF4F8;
+  --dx-color-blue-700: #0057B8;
+  --dx-color-blue-500: #178BFF;
+  --dx-color-blue-400: #24A2FF;
+  --dx-color-blue-200: #94D1FF;
+  --dx-color-success: #16A86A;
+  --dx-color-warning: #B86F00;
+  --dx-color-error: #D83B4C;
+  --dx-surface: #FFFFFF;
+  --dx-surface-subtle: #EEF4F8;
+  --dx-text: #071526;
+  --dx-text-muted: #526273;
+  --dx-border: #C8D3DD;
+  --dx-accent: #0057B8;
+  --dx-on-accent: #FFFFFF;
+  --dx-font-display: "Space Grotesk", Inter, Arial, sans-serif;
+  --dx-font-body: Inter, Arial, sans-serif;
+  --dx-font-mono: "IBM Plex Mono", Menlo, monospace;
+  --dx-space-1: 0.25rem; --dx-space-2: 0.5rem; --dx-space-3: 0.75rem;
+  --dx-space-4: 1rem; --dx-space-6: 1.5rem; --dx-space-8: 2rem;
+  --dx-space-12: 3rem; --dx-space-16: 4rem; --dx-space-24: 6rem;
+  --dx-radius-sm: 0.375rem; --dx-radius-md: 0.75rem;
+  --dx-radius-lg: 1.25rem; --dx-radius-pill: 999px;
+  --dx-shadow-raised: 0 8px 24px rgb(3 10 18 / 25%);
+  --dx-shadow-glow: 0 0 20px rgb(23 139 255 / 35%);
+  --dx-motion-fast: 120ms; --dx-motion-normal: 220ms; --dx-motion-slow: 420ms;
+  --dx-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --dx-ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --dx-focus-ring: #0057B8;
+  --dx-focus: 0 0 0 3px var(--dx-focus-ring);
+}
+
+[data-theme="dark"] {
+  --dx-surface: #071526;
+  --dx-surface-subtle: #101B2A;
+  --dx-text: #EEF4F8;
+  --dx-text-muted: #B5C2CF;
+  --dx-border: #405164;
+  --dx-accent: #24A2FF;
+  --dx-on-accent: #030A12;
+  --dx-focus-ring: #94D1FF;
+}
+
+:focus-visible { outline: 3px solid var(--dx-focus-ring); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

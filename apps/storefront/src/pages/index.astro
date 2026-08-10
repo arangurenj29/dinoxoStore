@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import CatalogPreview from '../components/sections/CatalogPreview.astro';
+import Faq from '../components/sections/Faq.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import Hero from '../components/sections/Hero.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import ProofStrip from '../components/sections/ProofStrip.astro';
+import Trust from '../components/sections/Trust.astro';
+---
+
+<BaseLayout>
+  <SiteHeader />
+  <main>
+    <Hero />
+    <ProofStrip />
+    <HowItWorks />
+    <CatalogPreview />
+    <Trust />
+    <Faq />
+    <FinalCta />
+  </main>
+  <SiteFooter />
+</BaseLayout>

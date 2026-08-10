@@ -1,0 +1,26 @@
+---
+interface Props {
+  alt: string;
+  name:
+    | 'gift-card'
+    | 'help'
+    | 'instagram'
+    | 'instant-delivery'
+    | 'linktree'
+    | 'payment'
+    | 'region'
+    | 'secure-purchase'
+    | 'tiktok'
+    | 'whatsapp-contact';
+}
+
+const { alt, name } = Astro.props;
+const iconSource = `--icon-source: url('/brand/icons/${name}.svg')`;
+---
+
+<span
+  class="icon"
+  style={iconSource}
+  role={alt ? 'img' : undefined}
+  aria-label={alt || undefined}
+  aria-hidden={alt ? undefined : 'true'}></span>

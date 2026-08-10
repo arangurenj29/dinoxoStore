@@ -1,0 +1,52 @@
+---
+import Icon from '../core/Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+
+const commitments = [
+  {
+    icon: 'payment',
+    title: 'Condiciones antes de pagar',
+    description:
+      'Confirmamos los datos relevantes antes de que tomes una decisión.',
+  },
+  {
+    icon: 'secure-purchase',
+    title: 'Compra acompañada',
+    description: 'Puedes consultar tu caso directamente por WhatsApp.',
+  },
+  {
+    icon: 'help',
+    title: 'Soporte humano',
+    description:
+      'Si tienes una duda, el canal de contacto está disponible para orientarte.',
+  },
+] as const;
+---
+
+<section
+  id="confianza"
+  class="site-section trust-section"
+  aria-labelledby="trust-title"
+>
+  <div class="site-section__inner trust-layout">
+    <SectionHeading
+      eyebrow="Compra con criterio"
+      headingId="trust-title"
+      title="La confianza empieza antes de la recarga."
+      description="No usamos testimonios ni cifras inventadas. Preferimos explicar el proceso y confirmar lo que vas a recibir."
+    />
+    <ul class="commitment-list">
+      {
+        commitments.map((commitment) => (
+          <li>
+            <Icon name={commitment.icon} alt="" />
+            <div>
+              <h3>{commitment.title}</h3>
+              <p>{commitment.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

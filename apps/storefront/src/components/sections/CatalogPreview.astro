@@ -1,0 +1,25 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+---
+
+<section
+  id="productos"
+  class="site-section catalog-section"
+  aria-labelledby="catalog-title"
+>
+  <div class="site-section__inner">
+    <SectionHeading
+      eyebrow="Productos disponibles"
+      headingId="catalog-title"
+      title="El catálogo se actualiza desde un solo lugar."
+      description="Consultá plataforma, región y denominación antes de escribirnos por WhatsApp."
+    />
+    <div class="catalog-grid" data-catalog-grid data-catalog-state="loading">
+      <p class="catalog-state" role="status" aria-live="polite">
+        Cargando catálogo…
+      </p>
+    </div>
+  </div>
+</section>
+
+<script is:inline src="/catalog-client.js" type="module"></script>
