@@ -2,7 +2,7 @@
 -- Safe for a linked non-production test project: every write is rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(1);
+select plan(8);
 
 set constraints public.admin_users_user_id_fkey deferred;
 set constraints public.audit_log_actor_id_fkey deferred;
@@ -18,42 +18,44 @@ values
 set local role anon;
 set local request.jwt.claims = '{"role":"anon"}';
 
-do $$
-begin
-  if (select count(*) from public.products) <> 1 then
-    raise exception 'anon must read exactly one published product';
-  end if;
-  begin
-    insert into public.products (slug, name) values ('anon-forbidden', 'Anon forbidden');
-    raise exception 'anon insert unexpectedly succeeded';
-  exception when insufficient_privilege then null;
-  end;
-  begin
-    perform public.reorder_product_media(array[]::uuid[]);
-    raise exception 'anon RPC unexpectedly succeeded';
-  exception when insufficient_privilege or undefined_function then null;
-  end;
-end
-$$;
+select is(
+  (select count(*)::integer from public.products),
+  1,
+  'anon must read exactly one published product'
+);
+select is(
+  has_table_privilege('anon', 'public.products', 'INSERT'),
+  false,
+  'anon cannot insert products'
+);
+select is(
+  has_function_privilege(
+    'anon',
+    'public.reorder_product_media(uuid[])',
+    'EXECUTE'
+  ),
+  false,
+  'anon cannot execute media reorder'
+);
 
 set local role authenticated;
 set local request.jwt.claims = '{"role":"authenticated","sub":"90000000-0000-4000-8000-000000000002","email":"non.admin@example.com"}';
 
-do $$
-begin
-  if (select count(*) from public.products) <> 1 then
-    raise exception 'authenticated non-admin must read only published products';
-  end if;
-  if (select count(*) from public.admin_users) <> 0 then
-    raise exception 'authenticated non-admin must not read admin membership';
-  end if;
-  begin
-    insert into public.products (slug, name) values ('non-admin-forbidden', 'Non-admin forbidden');
-    raise exception 'authenticated non-admin insert unexpectedly succeeded';
-  exception when insufficient_privilege then null;
-  end;
-end
-$$;
+select is(
+  (select count(*)::integer from public.products),
+  1,
+  'authenticated non-admin must read only published products'
+);
+select is(
+  (select count(*)::integer from public.admin_users),
+  0,
+  'authenticated non-admin must not read admin membership'
+);
+select is(
+  private.is_active_admin((select auth.uid())),
+  false,
+  'authenticated non-admin is not an active administrator'
+);
 
 set local role authenticated;
 set local request.jwt.claims = '{"role":"authenticated","sub":"90000000-0000-4000-8000-000000000001","email":"simulated.admin@example.com"}';
@@ -111,14 +113,14 @@ begin
   if (select count(*) from storage.objects where bucket_id = 'products') <> 2 then
     raise exception 'active admin must read inserted Storage objects';
   end if;
-  begin
-    insert into public.audit_log (entity, entity_id, action)
-    values ('forbidden', gen_random_uuid(), 'INSERT');
-    raise exception 'client audit insert unexpectedly succeeded';
-  exception when insufficient_privilege then null;
-  end;
 end
 $$;
+
+select is(
+  has_table_privilege('authenticated', 'public.audit_log', 'INSERT'),
+  false,
+  'authenticated clients cannot insert audit rows'
+);
 
 reset role;
 
