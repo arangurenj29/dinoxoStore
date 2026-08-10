@@ -9,11 +9,56 @@ select has_table('public', 'product_variants');
 select has_table('public', 'product_media');
 select has_table('public', 'audit_log');
 
-select row_security_is('public', 'admin_users', true);
-select row_security_is('public', 'products', true);
-select row_security_is('public', 'product_variants', true);
-select row_security_is('public', 'product_media', true);
-select row_security_is('public', 'audit_log', true);
+select is(
+  (
+    select relation.relrowsecurity
+    from pg_class as relation
+    join pg_namespace as namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'public' and relation.relname = 'admin_users'
+  ),
+  true,
+  'admin_users has RLS enabled'
+);
+select is(
+  (
+    select relation.relrowsecurity
+    from pg_class as relation
+    join pg_namespace as namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'public' and relation.relname = 'products'
+  ),
+  true,
+  'products has RLS enabled'
+);
+select is(
+  (
+    select relation.relrowsecurity
+    from pg_class as relation
+    join pg_namespace as namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'public' and relation.relname = 'product_variants'
+  ),
+  true,
+  'product_variants has RLS enabled'
+);
+select is(
+  (
+    select relation.relrowsecurity
+    from pg_class as relation
+    join pg_namespace as namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'public' and relation.relname = 'product_media'
+  ),
+  true,
+  'product_media has RLS enabled'
+);
+select is(
+  (
+    select relation.relrowsecurity
+    from pg_class as relation
+    join pg_namespace as namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'public' and relation.relname = 'audit_log'
+  ),
+  true,
+  'audit_log has RLS enabled'
+);
 
 select policies_are(
   'public',
