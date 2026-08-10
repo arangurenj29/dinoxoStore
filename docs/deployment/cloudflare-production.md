@@ -1,9 +1,10 @@
 # Despliegue automático del storefront a Cloudflare
 
-Cada push o merge a `main` promueve las migraciones pendientes y despliega
-`dinoxostore-storefront` únicamente después de que los jobs `storefront` y
-`database` terminen correctamente. Los pull requests ejecutan todos los gates,
-pero **nunca modifican producción**.
+Cada push o merge a `main` despliega `dinoxostore-storefront` únicamente después
+de que los jobs `storefront` y `database` terminen correctamente. Los pull
+requests ejecutan todos los gates, pero **nunca modifican producción**.
+Las migraciones de Supabase se aplican manualmente al único proyecto productivo;
+este workflow nunca escribe en Supabase.
 
 ## Configuración manual única
 
@@ -11,10 +12,7 @@ pero **nunca modifican producción**.
    permite, agrega required reviewers para proteger el acceso a producción.
 2. En ese environment agrega:
    - Secret `CLOUDFLARE_API_TOKEN`.
-   - Secret `SUPABASE_ACCESS_TOKEN`: un personal access token de Supabase.
-   - Secret `SUPABASE_DB_PASSWORD`: la contraseña de base de datos del proyecto.
    - Variable `CLOUDFLARE_ACCOUNT_ID`.
-   - Variable `SUPABASE_PROJECT_ID`: la referencia del proyecto de producción.
 3. En Cloudflare crea un token personalizado, limitado a la cuenta y zona de
    Dinoxo Store, con estos permisos mínimos para la configuración actual:
 
@@ -38,29 +36,26 @@ repositorio, logs, variables públicas ni archivos `.env`.
 push main
 ├─ storefront: format, lint, types, unitarias y builds
 ├─ database: stack Supabase local, migraciones y pgTAP
-└─ migrate (solo si ambos pasan)
-   ├─ supabase link al proyecto protegido
-   └─ supabase db push --linked
-      └─ deploy
-         ├─ instalación frozen y build:production
-         ├─ Wrangler deploy desde apps/storefront
-         └─ smoke de https://dinoxostore.com y /admin
+└─ deploy (solo si ambos pasan)
+   ├─ instalación frozen y build:production
+   ├─ Wrangler deploy desde apps/storefront
+   └─ smoke de https://dinoxostore.com y /admin
 ```
 
-Solo los archivos versionados en `supabase/migrations` se promueven con
-`supabase db push --linked`; no se ejecutan seeds ni resets. El historial remoto evita
-reaplicar versiones ya registradas. Los cambios manuales hechos fuera de esas
-migraciones continúan siendo drift y deben reconciliarse mediante una nueva
-migración versionada.
+El job `database` arranca una base efímera dentro del runner de GitHub y aplica
+los archivos versionados en `supabase/migrations` solo para probarlos junto con
+pgTAP. Esa base se destruye al finalizar y no es un segundo proyecto Supabase.
 
-Los jobs `migrate` y `deploy` usan el GitHub Environment `production`. Cada
-workflow se encola detrás del anterior y no se cancela una ejecución en curso
-(`cancel-in-progress: false`), porque interrumpir una mutación remota podría dejar
-el esquema y el Worker en estados incompatibles. No existe `workflow_dispatch`:
-una ejecución manual no puede saltarse los gates.
+Antes de fusionar cambios de esquema, aplicá manualmente las migraciones al único
+proyecto productivo con `supabase db push --linked`, verificá el historial remoto y
+comprobá el panel `/admin`. No se ejecutan seeds ni resets automáticamente. Los
+cambios manuales hechos fuera de esas migraciones continúan siendo drift y deben
+reconciliarse mediante una nueva migración versionada.
 
-Los secretos de Supabase se inyectan solo en los pasos `link` y `db push` que los
-consumen; las acciones de checkout e instalación no reciben esas credenciales.
+El job `deploy` usa el GitHub Environment `production`. Cada workflow se encola
+detrás del anterior y no se cancela una ejecución en curso
+(`cancel-in-progress: false`). No existe `workflow_dispatch`: una ejecución manual
+no puede saltarse los gates.
 
 El smoke HTTP reintenta durante la propagación del edge y sigue redirects, pero
 exige que `/` termine exactamente en `/` y que `/admin` termine en `/admin` o

@@ -48,37 +48,16 @@ test('CI ejecuta las pruebas SQL contra un stack Supabase local con CLI fijada',
   assert.doesNotMatch(job, /supabase (?:link|db push)|--linked/);
 });
 
-test('migrate depende de ambos gates y aplica únicamente migraciones versionadas', async () => {
-  const { job, workflow } = await readJob('migrate');
-  const stepsPosition = job.indexOf('\n    steps:');
+test('CI nunca escribe en la única Supabase productiva', async () => {
+  const workflow = await readFile(workflowUrl, 'utf8');
 
-  assert.match(job, /needs:\s*\[storefront, database\]/);
-  assert.match(
-    job,
-    /if: github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/,
-  );
-  assert.match(job, /environment:\s*production/);
-  assert.match(
-    job,
-    /SUPABASE_ACCESS_TOKEN: \$\{\{ secrets\.SUPABASE_ACCESS_TOKEN \}\}/,
-  );
-  assert.match(
-    job,
-    /SUPABASE_DB_PASSWORD: \$\{\{ secrets\.SUPABASE_DB_PASSWORD \}\}/,
-  );
-  assert.match(
-    job,
-    /SUPABASE_PROJECT_ID: \$\{\{ vars\.SUPABASE_PROJECT_ID \}\}/,
-  );
-  assert.match(job, /supabase link --project-ref "\$SUPABASE_PROJECT_ID"/);
-  assert.match(job, /supabase db push --linked/);
+  assert.doesNotMatch(workflow, /^\s{2}migrate:\n/m);
+  assert.doesNotMatch(workflow, /supabase link|supabase db push|--linked/);
   assert.doesNotMatch(
-    job.slice(0, stepsPosition),
-    /SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD/,
-    'Los secretos deben limitarse a los pasos CLI que los consumen',
+    workflow,
+    /SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD|SUPABASE_PROJECT_ID/,
   );
-  assert.doesNotMatch(job, /yvbrvclbqmvxxtfehxxp|include-seed|db reset/);
-  assert.doesNotMatch(workflow, /workflow_dispatch/);
+  assert.doesNotMatch(workflow, /include-seed|db reset|workflow_dispatch/);
 });
 
 test('producción se serializa sin cancelar una mutación en curso', async () => {
@@ -92,10 +71,10 @@ test('producción se serializa sin cancelar una mutación en curso', async () =>
   assert.doesNotMatch(workflow, /cancel-in-progress: true/);
 });
 
-test('deploy depende de migrate y concede solo permisos necesarios', async () => {
+test('deploy depende de ambos gates y concede solo permisos necesarios', async () => {
   const { job } = await readJob('deploy');
 
-  assert.match(job, /needs:\s*migrate/);
+  assert.match(job, /needs:\s*\[storefront, database\]/);
   assert.match(
     job,
     /permissions:\s*\n\s+contents: read\s*\n\s+deployments: write/,
@@ -121,22 +100,17 @@ test('deploy construye producción y usa Wrangler fijado desde el subdirectorio'
 });
 
 test('acciones con acceso a producción están fijadas por SHA completo', async () => {
-  const migrate = (await readJob('migrate')).job;
   const deploy = (await readJob('deploy')).job;
   const smoke = (await readJob('smoke')).job;
-  const productionJobs = `${migrate}\n${deploy}\n${smoke}`;
+  const productionJobs = `${deploy}\n${smoke}`;
   const actionReferences = [
     ...productionJobs.matchAll(/uses:\s+[^\s@]+@([^\s#]+)/g),
   ];
 
-  assert.ok(actionReferences.length >= 6);
+  assert.ok(actionReferences.length >= 4);
   for (const [, reference] of actionReferences) {
     assert.match(reference, /^[0-9a-f]{40}$/);
   }
-  assert.match(
-    migrate,
-    /supabase\/setup-cli@46f7f98c7f948ad727d22c1e67fab04c223a0520/,
-  );
   assert.match(
     deploy,
     /cloudflare\/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd/,
@@ -146,14 +120,11 @@ test('acciones con acceso a producción están fijadas por SHA completo', async 
 test('smoke corre después del deploy y verifica producción sin credenciales', async () => {
   const { job, workflow } = await readJob('smoke');
   const databasePosition = workflow.indexOf('  database:');
-  const migratePosition = workflow.indexOf('  migrate:');
   const deployPosition = workflow.indexOf('  deploy:');
   const smokePosition = workflow.indexOf('  smoke:');
 
   assert.ok(
-    databasePosition < migratePosition &&
-      migratePosition < deployPosition &&
-      deployPosition < smokePosition,
+    databasePosition < deployPosition && deployPosition < smokePosition,
   );
   assert.match(job, /needs:\s*deploy/);
   assert.match(job, /run: node scripts\/production-smoke\.mjs/);
@@ -169,14 +140,13 @@ test('la guía de despliegue documenta configuración mínima, rollback y límit
   assert.match(guide, /GitHub Environment `production`/);
   assert.match(guide, /CLOUDFLARE_API_TOKEN/);
   assert.match(guide, /CLOUDFLARE_ACCOUNT_ID/);
-  assert.match(guide, /SUPABASE_ACCESS_TOKEN/);
-  assert.match(guide, /SUPABASE_DB_PASSWORD/);
-  assert.match(guide, /SUPABASE_PROJECT_ID/);
+  assert.match(guide, /workflow nunca escribe en Supabase/);
+  assert.match(guide, /aplican manualmente/);
   assert.match(guide, /Workers Scripts (?:Edit|Write)/);
   assert.match(guide, /Workers Routes (?:Edit|Write)/);
   assert.match(guide, /wrangler versions list/);
   assert.match(guide, /wrangler rollback/);
   assert.match(guide, /supabase db push --linked/);
-  assert.match(guide, /solo[^\n]+supabase\/migrations/i);
+  assert.match(guide, /archivos versionados en `supabase\/migrations`/i);
   assert.match(guide, /no se cancela/i);
 });
