@@ -3,11 +3,66 @@ begin;
 create extension if not exists pgtap with schema extensions;
 select plan(21);
 
-select has_table('public', 'admin_users');
-select has_table('public', 'products');
-select has_table('public', 'product_variants');
-select has_table('public', 'product_media');
-select has_table('public', 'audit_log');
+select is(
+  (
+    select count(*)::integer
+    from pg_class as table_row
+    join pg_namespace as schema_row on schema_row.oid = table_row.relnamespace
+    where schema_row.nspname = 'public'
+      and table_row.relname = 'admin_users'
+      and table_row.relkind in ('r', 'p')
+  ),
+  1,
+  'admin_users'
+);
+select is(
+  (
+    select count(*)::integer
+    from pg_class as table_row
+    join pg_namespace as schema_row on schema_row.oid = table_row.relnamespace
+    where schema_row.nspname = 'public'
+      and table_row.relname = 'products'
+      and table_row.relkind in ('r', 'p')
+  ),
+  1,
+  'products'
+);
+select is(
+  (
+    select count(*)::integer
+    from pg_class as table_row
+    join pg_namespace as schema_row on schema_row.oid = table_row.relnamespace
+    where schema_row.nspname = 'public'
+      and table_row.relname = 'product_variants'
+      and table_row.relkind in ('r', 'p')
+  ),
+  1,
+  'product_variants'
+);
+select is(
+  (
+    select count(*)::integer
+    from pg_class as table_row
+    join pg_namespace as schema_row on schema_row.oid = table_row.relnamespace
+    where schema_row.nspname = 'public'
+      and table_row.relname = 'product_media'
+      and table_row.relkind in ('r', 'p')
+  ),
+  1,
+  'product_media'
+);
+select is(
+  (
+    select count(*)::integer
+    from pg_class as table_row
+    join pg_namespace as schema_row on schema_row.oid = table_row.relnamespace
+    where schema_row.nspname = 'public'
+      and table_row.relname = 'audit_log'
+      and table_row.relkind in ('r', 'p')
+  ),
+  1,
+  'audit_log'
+);
 
 select is(
   (
