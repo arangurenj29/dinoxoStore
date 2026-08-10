@@ -76,7 +76,7 @@ test('el primer viewport conserva la marca raster y ofrece una conversión por W
   );
   assert.match(
     html,
-    /<span[^>]*class="icon"[^>]*style="--icon-source: url\('\/brand\/icons\/whatsapp-contact\.svg'\)"/,
+    /<span[^>]*class="icon icon--whatsapp-contact"[^>]*aria-hidden="true"/,
   );
   assert.match(html, /href="https:\/\/wa\.me\/584268158785\?text=/);
   assert.match(
