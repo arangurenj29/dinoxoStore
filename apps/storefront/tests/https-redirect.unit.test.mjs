@@ -25,6 +25,7 @@ test('sirve el recurso estático cuando la petición ya usa HTTPS', async () => 
   const request = new Request('https://dinoxostore.com/');
 
   const response = await storefrontWorker.fetch(request, {
+    SUPABASE_URL: 'https://yvbrvclbqmvxxtfehxxp.supabase.co',
     ASSETS: {
       fetch: async (assetRequest) => {
         receivedRequest = assetRequest;

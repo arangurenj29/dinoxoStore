@@ -7,7 +7,7 @@ Esta arquitectura permite iniciar en US$0/mes, incorporar un panel para administ
 ## Ruta rápida
 
 1. Crear el storefront con Astro y desplegarlo en Cloudflare Workers.
-2. Crear `admin.dinoxostore.com` como aplicación administrativa independiente.
+2. Servir el panel administrativo en la ruta `/admin` del storefront durante v1.
 3. Provisionar un proyecto Supabase con migraciones versionadas.
 4. Implementar catálogo, autenticación administrativa, Storage y políticas RLS.
 5. Mantener estáticos el landing y sus activos; ejecutar Worker solo para rutas dinámicas.
@@ -21,7 +21,7 @@ Esta arquitectura permite iniciar en US$0/mes, incorporar un panel para administ
 | Storefront | Astro + TypeScript estricto sobre Cloudflare Workers |
 | Landing | Pre-renderizado y servido como Static Assets |
 | Catálogo público | Renderizado con datos de Supabase mediante un Worker delgado y caché edge |
-| Panel administrativo | Aplicación web estática en `admin.dinoxostore.com` |
+| Panel administrativo | Ruta web estática `/admin` dentro del storefront |
 | Base de datos | PostgreSQL administrado por Supabase |
 | Autenticación | Supabase Auth, únicamente para administradores en v1 |
 | Autorización | Row Level Security en todas las tablas y objetos expuestos |
@@ -63,7 +63,7 @@ Los pedidos y pagos constituyen otro bounded context. No deben añadirse como ca
 ```mermaid
 flowchart LR
     U["Cliente"] --> CF["Cloudflare Edge"]
-    AD["Administrador"] --> ADM["admin.dinoxostore.com"]
+    AD["Administrador"] --> ADM["dinoxostore.com/admin"]
 
     CF --> STATIC["Landing y activos estáticos"]
     CF --> WORKER["Worker: catálogo público"]
@@ -151,7 +151,7 @@ RLS estará activa en **todas** las tablas expuestas por la API de Supabase.
 | Público anónimo | `SELECT` únicamente sobre productos y variantes con estado `published` |
 | Administrador activo | `SELECT`, `INSERT`, `UPDATE` y archivado lógico del catálogo |
 | Administrador inactivo | Ninguna operación administrativa |
-| Cliente web | Ningún acceso directo a `admin_users` ni `audit_log` |
+| Cliente web | Solo puede leer su propia membresía activa en `admin_users`; nunca accede a `audit_log` |
 
 Reglas no negociables:
 
@@ -169,7 +169,7 @@ Referencias oficiales:
 
 ## Arquitectura del repositorio
 
-Dos aplicaciones con ciclos de despliegue diferentes justifican un workspace ligero:
+Una aplicación Astro mantiene dos superficies con comportamientos distintos: landing sin JavaScript y panel interactivo en `/admin`:
 
 ```text
 DinoxoStore/
@@ -177,13 +177,12 @@ DinoxoStore/
 │   ├── storefront/                # Astro: landing, catálogo y Worker público
 │   │   ├── public/
 │   │   ├── src/
+│   │   │   ├── admin/             # Controlador cliente del panel
+│   │   │   └── pages/
+│   │   │       └── admin.astro    # Panel administrativo estático en /admin
 │   │   ├── tests/
 │   │   ├── astro.config.mjs
 │   │   └── wrangler.jsonc
-│   └── admin/                     # Panel administrativo estático
-│       ├── src/
-│       ├── tests/
-│       └── vite.config.ts
 ├── brand/                         # Fuente de verdad de identidad
 │   ├── assets/
 │   └── tokens/brand.css
@@ -306,7 +305,7 @@ La seguridad se diseña por capas; Cloudflare no sustituye la autorización de S
 - Aplicar `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` y protección contra framing.
 - Registrar operaciones administrativas relevantes sin guardar contraseñas, tokens ni datos sensibles en logs.
 
-Cloudflare Access puede añadirse posteriormente como segunda barrera para `admin.dinoxostore.com`, pero no reemplazará Supabase Auth ni RLS.
+Cloudflare Access puede añadirse posteriormente como segunda barrera para `/admin`, pero no reemplazará Supabase Auth ni RLS.
 
 ## SEO y descubrimiento
 
@@ -322,13 +321,14 @@ Cloudflare Access puede añadirse posteriormente como segunda barrera para `admi
 
 | Entorno | Storefront | Admin | Supabase |
 |---|---|---|---|
-| Local | `localhost` | `localhost` | Supabase local |
-| Preview | URL temporal `workers.dev` | URL temporal no indexable | Proyecto de desarrollo o entorno aislado |
-| Producción | `dinoxostore.com` | `admin.dinoxostore.com` | Proyecto de producción |
+| Local | `localhost` | `localhost/admin` | Supabase local |
+| Preview | URL temporal `workers.dev` | `/admin` en la preview no indexable | Proyecto de desarrollo o entorno aislado |
+| Producción | `dinoxostore.com` | `dinoxostore.com/admin` | Proyecto de producción |
 
 Reglas:
 
 - Preview y producción nunca comparten datos administrativos.
+- Un build preview sin overrides aislados falla; jamás hereda el proyecto productivo.
 - Las previews envían `X-Robots-Tag: noindex`.
 - Las variables de entorno se configuran en Cloudflare y CI, no en archivos versionados.
 - Las migraciones se prueban localmente y se aplican automáticamente antes del despliegue compatible.
@@ -344,7 +344,7 @@ install --frozen-lockfile
 → unit tests
 → Supabase migration reset
 → RLS and database tests
-→ build storefront and admin
+→ build storefront, incluida la ruta /admin
 → accessibility smoke
 → Playwright responsive and admin flows
 → Lighthouse CI

@@ -3,8 +3,10 @@ import test from 'node:test';
 
 import { renderDeployHeaders } from '../src/lib/deploy-headers.ts';
 
+const supabaseUrl = 'https://test-project.supabase.co';
+
 test('preview envía X-Robots-Tag noindex para todas las rutas', () => {
-  const headers = renderDeployHeaders('preview');
+  const headers = renderDeployHeaders('preview', supabaseUrl);
 
   assert.match(headers, /\/\*\s*\n\s+X-Robots-Tag: noindex, nofollow/);
   assert.match(headers, /Content-Security-Policy: default-src 'self'/);
@@ -13,7 +15,7 @@ test('preview envía X-Robots-Tag noindex para todas las rutas', () => {
 });
 
 test('producción es indexable y mantiene los encabezados de seguridad', () => {
-  const headers = renderDeployHeaders('production');
+  const headers = renderDeployHeaders('production', supabaseUrl);
 
   assert.doesNotMatch(headers, /X-Robots-Tag/i);
   assert.match(headers, /Content-Security-Policy: default-src 'self'/);

@@ -1,7 +1,4 @@
 ---
-import { demoProducts, productWhatsAppHref } from '../../content/catalog';
-import ButtonLink from '../core/ButtonLink.astro';
-import Icon from '../core/Icon.astro';
 import SectionHeading from '../SectionHeading.astro';
 ---
 
@@ -12,41 +9,17 @@ import SectionHeading from '../SectionHeading.astro';
 >
   <div class="site-section__inner">
     <SectionHeading
-      eyebrow="Vista previa"
+      eyebrow="Productos disponibles"
       headingId="catalog-title"
-      title="El catálogo se administra desde un solo lugar."
-      description="Estas tarjetas son una demostración: el administrador reemplazará plataforma, región, precio y disponibilidad."
+      title="El catálogo se actualiza desde un solo lugar."
+      description="Consultá plataforma, región y denominación antes de escribirnos por WhatsApp."
     />
-    <div class="catalog-grid">
-      {
-        demoProducts.map((product) => (
-          <article class="catalog-card">
-            <p class="catalog-card__status">Producto de demostración</p>
-            <h3>{product.platform}</h3>
-            <dl>
-              <div>
-                <dt>Valor</dt>
-                <dd>{product.denomination}</dd>
-              </div>
-              <div>
-                <dt>Región</dt>
-                <dd>{product.region}</dd>
-              </div>
-              <div>
-                <dt>Entrega</dt>
-                <dd>{product.delivery}</dd>
-              </div>
-            </dl>
-            <ButtonLink
-              href={productWhatsAppHref(product)}
-              label="Consultar producto"
-              variant="secondary"
-            >
-              <Icon slot="icon" name="whatsapp-contact" alt="" />
-            </ButtonLink>
-          </article>
-        ))
-      }
+    <div class="catalog-grid" data-catalog-grid data-catalog-state="loading">
+      <p class="catalog-state" role="status" aria-live="polite">
+        Cargando catálogo…
+      </p>
     </div>
   </div>
 </section>
+
+<script is:inline src="/catalog-client.js" type="module"></script>

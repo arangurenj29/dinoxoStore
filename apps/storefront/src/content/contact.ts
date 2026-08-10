@@ -1,4 +1,5 @@
-export const whatsappNumber = '584241140038';
+// WhatsApp requires the E.164 form: Venezuela (+58) without the local leading zero.
+export const whatsappNumber = '584268158785';
 const whatsappMessage =
   'Hola, quiero consultar por una recarga digital en Dinoxo Store.';
 

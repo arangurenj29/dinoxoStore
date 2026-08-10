@@ -22,11 +22,19 @@ async function readArtifact(relativePath) {
   return readFile(path.join(distributionDirectory, relativePath), 'utf8');
 }
 
-function assertNoExecutableClientScript(html) {
-  assert.doesNotMatch(
-    html,
-    /<script\b(?![^>]*\btype=["']application\/ld\+json["'])/i,
-  );
+function assertNoExecutableClientScript(html, allowCatalogModule = false) {
+  const executableScripts = [
+    ...html.matchAll(/<script\b[^>]*>(?:[\s\S]*?)<\/script>/gi),
+  ].map(([script]) => script);
+  if (allowCatalogModule) {
+    for (const script of executableScripts) {
+      if (/application\/ld\+json/i.test(script)) continue;
+      assert.match(script, /type=["']module["']/i);
+      assert.match(script, /catalog-client|\/api\/catalog/i);
+    }
+  } else {
+    assert.equal(executableScripts.length, 0);
+  }
   assert.doesNotMatch(
     html,
     /<astro-island\b|client:(?:load|idle|visible|media|only)/i,
@@ -46,7 +54,11 @@ test('la portada estática es semántica y coincide con el entorno desplegado', 
       `<meta name="robots" content="${isPreview ? 'noindex, nofollow' : 'index, follow'}">`,
     ),
   );
-  assertNoExecutableClientScript(html);
+  assert.match(
+    html,
+    /<script[^>]*src="\/catalog-client\.js"[^>]*type="module"/i,
+  );
+  assertNoExecutableClientScript(html, true);
 });
 
 test('el primer viewport conserva la marca raster y ofrece una conversión por WhatsApp', async () => {
@@ -62,12 +74,23 @@ test('el primer viewport conserva la marca raster y ofrece una conversión por W
     html,
     /<img[^>]*src="\/brand\/dinoxostore-logo-isolated-v1-640\.webp"[^>]*alt="Dinoxo Store"/,
   );
-  assert.match(html, /href="https:\/\/wa\.me\/584241140038\?text=/);
-  assert.match(html, /href="#inicio"/);
+  assert.match(
+    html,
+    /<span[^>]*class="icon"[^>]*style="--icon-source: url\('\/brand\/icons\/whatsapp-contact\.svg'\)"/,
+  );
+  assert.match(html, /href="https:\/\/wa\.me\/584268158785\?text=/);
+  assert.match(
+    html,
+    /<a[^>]*class="site-wordmark"[^>]*href="#inicio"[^>]*>[\s\S]*dinoxo\.store[\s\S]*<\/a>/,
+  );
+  assert.match(html, /class="site-wordmark__logo"/);
+  assert.match(html, /aria-label="Instagram"/);
+  assert.match(html, /aria-label="TikTok"/);
+  assert.match(html, /aria-label="Linktree"/);
   assert.doesNotMatch(html, /<svg[^>]*aria-label="Dinoxo Store"/i);
 });
 
-test('el recorrido comercial usa contenido demo tipado y CTAs contextuales sin JavaScript', async () => {
+test('el recorrido comercial conecta el catálogo publicado y sus CTAs', async () => {
   const html = await readArtifact('index.html');
 
   for (const sectionId of [
@@ -81,13 +104,14 @@ test('el recorrido comercial usa contenido demo tipado y CTAs contextuales sin J
     assert.match(html, new RegExp(`<section[^>]*id="${sectionId}"`));
   }
 
-  assert.equal((html.match(/class="catalog-card"/g) ?? []).length, 3);
-  assert.equal((html.match(/Producto de demostración/g) ?? []).length, 3);
-  assert.equal((html.match(/USD 10/g) ?? []).length, 3);
-  assert.match(html, /href="https:\/\/wa\.me\/584241140038\?text=/);
+  assert.equal((html.match(/class="catalog-card"/g) ?? []).length, 0);
+  assert.match(html, /data-catalog-grid/);
+  assert.match(html, /Cargando catálogo/);
+  assert.doesNotMatch(html, /Ejemplo de catálogo|Plataforma demo|USD 10/);
+  assert.match(html, /catalog-client|\/api\/catalog/i);
   assert.match(html, /https:\/\/www\.instagram\.com\/dinoxo\.store/);
   assert.match(html, /https:\/\/www\.tiktok\.com\/@dinoxo\.store/);
-  assertNoExecutableClientScript(html);
+  assertNoExecutableClientScript(html, true);
 });
 
 test('404 es estática, noindex y no declara un canonical engañoso', async () => {
@@ -99,6 +123,20 @@ test('404 es estática, noindex y no declara un canonical engañoso', async () =
   assert.match(html, /<a href="\/">Volver al inicio<\/a>/);
   assert.match(html, /<main class="not-found-page">/);
   assertNoExecutableClientScript(html);
+});
+
+test('el panel /admin se construye como superficie privada y no indexable', async () => {
+  const html = await readArtifact('admin/index.html');
+
+  assert.match(html, /<main class="admin-shell">/);
+  assert.match(html, /id="admin-login"/);
+  assert.match(html, /id="login-password"[^>]+type="password"/);
+  assert.match(html, />Iniciar sesión</);
+  assert.doesNotMatch(html, /Enviar enlace/);
+  assert.match(html, /id="admin-workspace"/);
+  assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+  assert.doesNotMatch(html, /<link rel="canonical"/i);
+  assert.match(html, /<script[^>]+type="module"[^>]+src="\/_astro\//);
 });
 
 test('el artefacto de headers coincide con el entorno esperado', async () => {

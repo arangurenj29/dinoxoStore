@@ -1,0 +1,253 @@
+---
+import Logo from '../components/core/Logo.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/admin.css';
+---
+
+<BaseLayout
+  pageKind="admin"
+  title="Administración | Dinoxo Store"
+  description="Panel privado de administración del catálogo de Dinoxo Store."
+>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a class="admin-brand" href="/" aria-label="Volver a Dinoxo Store">
+        <Logo className="admin-brand__logo" />
+        <span>
+          <strong>Dinoxo Store</strong>
+          <small>Administración de catálogo</small>
+        </span>
+      </a>
+      <div class="admin-session">
+        <span id="session-label">Sin sesión</span>
+        <button id="sign-out" class="button button--quiet" type="button" hidden>
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <p id="admin-status" class="admin-status" role="status" aria-live="polite">
+      Verificando sesión…
+    </p>
+
+    <section
+      id="admin-login"
+      class="login-panel"
+      aria-labelledby="login-title"
+      hidden
+    >
+      <p class="admin-eyebrow">Acceso restringido</p>
+      <h1 id="login-title">Inicia sesión para administrar el catálogo.</h1>
+      <p>
+        Usa las credenciales creadas manualmente en Supabase Auth. Este panel no
+        permite crear usuarios ni cambiar contraseñas; la base de datos
+        confirmará si tu identidad tiene permisos administrativos.
+      </p>
+      <form id="login-form" class="login-form">
+        <label class="login-field" for="login-email">
+          <span>Correo administrativo</span>
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            inputmode="email"
+            required
+          />
+        </label>
+        <label class="login-field" for="login-password">
+          <span>Contraseña</span>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+        <button class="button button--primary login-submit" type="submit">
+          Iniciar sesión
+        </button>
+      </form>
+    </section>
+
+    <section
+      id="admin-workspace"
+      class="admin-workspace"
+      aria-labelledby="workspace-title"
+      hidden
+    >
+      <div class="workspace-heading">
+        <div>
+          <p class="admin-eyebrow">Catálogo</p>
+          <h1 id="workspace-title">Productos y disponibilidad</h1>
+        </div>
+        <div class="workspace-actions">
+          <button
+            id="refresh-products"
+            class="button button--quiet"
+            type="button"
+          >
+            Actualizar
+          </button>
+          <button id="new-product" class="button button--primary" type="button">
+            Nuevo producto
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-layout">
+        <aside class="product-index" aria-label="Productos">
+          <label class="search-field" for="product-search">
+            <span>Buscar</span>
+            <input
+              id="product-search"
+              type="search"
+              placeholder="Nombre, slug o estado"
+              autocomplete="off"
+            />
+          </label>
+          <p id="product-count" class="product-count">0 productos</p>
+          <ul id="product-list" class="product-list"></ul>
+          <p id="product-empty" class="empty-state">
+            Aún no hay productos. Crea el primero para comenzar.
+          </p>
+        </aside>
+
+        <div class="catalog-editor">
+          <form id="product-form" class="editor-section" hidden>
+            <input id="product-id" name="id" type="hidden" />
+            <div class="section-title">
+              <div>
+                <p class="admin-eyebrow">Ficha comercial</p>
+                <h2 id="product-form-title">Nuevo producto</h2>
+              </div>
+              <span id="product-state" class="state-badge">Borrador</span>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                <span>Nombre</span>
+                <input
+                  id="product-name"
+                  name="name"
+                  required
+                  minlength="2"
+                  maxlength="120"
+                />
+              </label>
+              <label>
+                <span>Slug</span>
+                <input
+                  id="product-slug"
+                  name="slug"
+                  required
+                  pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                  maxlength="120"
+                />
+              </label>
+              <label class="form-grid__wide">
+                <span>Descripción</span>
+                <textarea id="product-description" name="description" rows="4"
+                ></textarea>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button--primary" type="submit"
+                >Guardar cambios</button
+              >
+              <button
+                id="publish-product"
+                class="button button--quiet"
+                type="button"
+                data-confirm="Publicar este producto"
+              >
+                Publicar
+              </button>
+              <button
+                id="archive-product"
+                class="button button--danger"
+                type="button"
+                data-confirm="Archivar este producto"
+              >
+                Archivar
+              </button>
+            </div>
+          </form>
+
+          <section
+            id="variant-section"
+            class="editor-section"
+            aria-labelledby="variant-title"
+            hidden
+          >
+            <div class="section-title">
+              <div>
+                <p class="admin-eyebrow">Opciones de venta</p>
+                <h2 id="variant-title">Variantes</h2>
+              </div>
+              <button
+                id="add-variant"
+                class="button button--quiet"
+                type="button"
+              >
+                Añadir variante
+              </button>
+            </div>
+            <div id="variant-list" class="variant-list"></div>
+            <p id="variant-empty" class="empty-state">
+              Este producto no tiene variantes.
+            </p>
+          </section>
+
+          <section
+            id="media-section"
+            class="editor-section"
+            aria-labelledby="media-title"
+            hidden
+          >
+            <div class="section-title">
+              <div>
+                <p class="admin-eyebrow">Archivos</p>
+                <h2 id="media-title">Imágenes</h2>
+              </div>
+              <label class="button button--quiet upload-button">
+                Subir imágenes
+                <input
+                  id="media-upload"
+                  type="file"
+                  accept="image/avif,image/gif,image/jpeg,image/png,image/webp"
+                  multiple
+                />
+              </label>
+            </div>
+            <div id="upload-progress" class="upload-progress" hidden>
+              <progress id="upload-progress-bar" value="0" max="1"></progress>
+              <span id="upload-progress-label">Preparando carga…</span>
+            </div>
+            <p class="upload-limits">
+              AVIF, GIF, JPEG, PNG o WebP. Máximo 8 MB y 4096 × 4096 px por
+              archivo; el contenido real será validado antes de subir.
+            </p>
+            <ol id="media-list" class="media-list"></ol>
+            <p id="media-empty" class="empty-state">
+              Este producto no tiene imágenes.
+            </p>
+          </section>
+
+          <section id="editor-placeholder" class="editor-placeholder">
+            <p class="admin-eyebrow">Editor</p>
+            <h2>Selecciona un producto o crea uno nuevo.</h2>
+            <p>
+              Los cambios se guardan directamente en Supabase y quedan sujetos a
+              RLS.
+            </p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../admin/admin.ts"></script>
+</BaseLayout>

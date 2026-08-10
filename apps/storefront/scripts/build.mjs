@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { renderDeployHeaders } from '../src/lib/deploy-headers.ts';
+import { loadPublicConfig } from './public-config.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const storefrontDirectory = path.resolve(scriptDirectory, '..');
@@ -14,10 +15,15 @@ if (deployEnvironment !== 'preview' && deployEnvironment !== 'production') {
 }
 
 const publicDirectory = path.join(storefrontDirectory, 'public');
+const config = await loadPublicConfig(
+  new URL('../config/public-env.json', import.meta.url),
+  deployEnvironment,
+  process.env,
+);
 await mkdir(publicDirectory, { recursive: true });
 await writeFile(
   path.join(publicDirectory, '_headers'),
-  renderDeployHeaders(deployEnvironment),
+  renderDeployHeaders(deployEnvironment, config.supabaseUrl),
   'utf8',
 );
 
@@ -33,6 +39,8 @@ const result = spawnSync(astroExecutable, ['build'], {
     ...process.env,
     ASTRO_TELEMETRY_DISABLED: '1',
     PUBLIC_DEPLOY_ENV: deployEnvironment,
+    PUBLIC_SUPABASE_PUBLISHABLE_KEY: config.supabasePublishableKey,
+    PUBLIC_SUPABASE_URL: config.supabaseUrl,
   },
   stdio: 'inherit',
 });

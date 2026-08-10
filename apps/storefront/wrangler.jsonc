@@ -4,6 +4,10 @@
   "main": "./src/worker.ts",
   "compatibility_date": "2026-08-04",
   "workers_dev": false,
+  "vars": {
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_5Osn2s-bQqLKeGm0BZ5ayA_Efh7gLjP",
+    "SUPABASE_URL": "https://yvbrvclbqmvxxtfehxxp.supabase.co",
+  },
   "routes": [
     {
       "pattern": "dinoxostore.com",

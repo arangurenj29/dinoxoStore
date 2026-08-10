@@ -11,7 +11,7 @@ export interface PageMetadata extends Omit<SiteMetadata, 'canonicalUrl'> {
   canonicalUrl: string | undefined;
 }
 
-export type PageKind = 'default' | 'not-found';
+export type PageKind = 'admin' | 'default' | 'not-found';
 
 const CANONICAL_URL = 'https://dinoxostore.com/';
 
@@ -35,7 +35,7 @@ export function resolvePageMetadata(
 ): PageMetadata {
   const metadata = resolveSiteMetadata(deployEnvironment);
 
-  if (pageKind === 'not-found') {
+  if (pageKind === 'not-found' || pageKind === 'admin') {
     return {
       ...metadata,
       canonicalUrl: undefined,

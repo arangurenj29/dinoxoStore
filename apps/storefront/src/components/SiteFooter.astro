@@ -1,9 +1,6 @@
 ---
-const socialLinks = [
-  { label: 'Instagram', href: 'https://www.instagram.com/dinoxo.store' },
-  { label: 'TikTok', href: 'https://www.tiktok.com/@dinoxo.store' },
-  { label: 'Linktree', href: 'https://linktr.ee/dinoxo.store' },
-] as const;
+import { socialLinks } from '../content/social';
+import Icon from './core/Icon.astro';
 ---
 
 <footer class="site-footer">
@@ -12,8 +9,15 @@ const socialLinks = [
     <nav aria-label="Redes oficiales">
       {
         socialLinks.map((socialLink) => (
-          <a href={socialLink.href} target="_blank" rel="noreferrer">
-            {socialLink.label}
+          <a
+            class="social-link"
+            href={socialLink.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={socialLink.label}
+            title={socialLink.label}
+          >
+            <Icon name={socialLink.icon} alt="" />
           </a>
         ))
       }

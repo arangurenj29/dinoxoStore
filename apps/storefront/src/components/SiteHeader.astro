@@ -1,18 +1,41 @@
 ---
 import { whatsappHref } from '../content/contact';
+import { socialLinks } from '../content/social';
 import ButtonLink from './core/ButtonLink.astro';
 import Icon from './core/Icon.astro';
+import Logo from './core/Logo.astro';
 ---
 
 <header class="site-header">
   <nav class="site-nav" aria-label="Navegación principal">
-    <a class="site-wordmark" href="#inicio">Dinoxo Store</a>
+    <a class="site-wordmark" href="#inicio" aria-label="Dinoxo Store, inicio">
+      <Logo className="site-wordmark__logo" />
+      <span>dinoxo.store</span>
+    </a>
     <div class="site-nav__links">
       <a href="#como-funciona">Cómo funciona</a>
       <a href="#productos">Productos</a>
     </div>
-    <ButtonLink href={whatsappHref} label="Hablar ahora" variant="secondary">
-      <Icon slot="icon" name="whatsapp-contact" alt="" />
-    </ButtonLink>
+    <div class="site-nav__actions">
+      <div class="site-social-links" role="group" aria-label="Redes oficiales">
+        {
+          socialLinks.map((socialLink) => (
+            <a
+              class="social-link"
+              href={socialLink.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={socialLink.label}
+              title={socialLink.label}
+            >
+              <Icon name={socialLink.icon} alt="" />
+            </a>
+          ))
+        }
+      </div>
+      <ButtonLink href={whatsappHref} label="Hablar ahora" variant="secondary">
+        <Icon slot="icon" name="whatsapp-contact" alt="" />
+      </ButtonLink>
+    </div>
   </nav>
 </header>

@@ -7,11 +7,12 @@
     "build": "node scripts/build.mjs preview",
     "build:production": "node scripts/build.mjs production",
     "deploy": "wrangler deploy",
-    "dev": "astro dev",
+    "dev": "node scripts/dev.mjs",
     "preview": "wrangler dev",
     "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.112.0",
     "astro": "7.1.6"
   },
   "devDependencies": {
