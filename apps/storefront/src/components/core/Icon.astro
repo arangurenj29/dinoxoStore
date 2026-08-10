@@ -15,12 +15,10 @@ interface Props {
 }
 
 const { alt, name } = Astro.props;
-const iconSource = `--icon-source: url('/brand/icons/${name}.svg')`;
 ---
 
 <span
-  class="icon"
-  style={iconSource}
+  class:list={['icon', `icon--${name}`]}
   role={alt ? 'img' : undefined}
   aria-label={alt || undefined}
   aria-hidden={alt ? undefined : 'true'}></span>

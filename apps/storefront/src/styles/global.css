@@ -1048,8 +1048,62 @@ a {
   width: 1.5rem;
   height: 1.5rem;
   background-color: currentColor;
-  -webkit-mask: var(--icon-source) center / contain no-repeat;
-  mask: var(--icon-source) center / contain no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.icon--gift-card {
+  -webkit-mask-image: url('/brand/icons/gift-card.svg');
+  mask-image: url('/brand/icons/gift-card.svg');
+}
+
+.icon--help {
+  -webkit-mask-image: url('/brand/icons/help.svg');
+  mask-image: url('/brand/icons/help.svg');
+}
+
+.icon--instagram {
+  -webkit-mask-image: url('/brand/icons/instagram.svg');
+  mask-image: url('/brand/icons/instagram.svg');
+}
+
+.icon--instant-delivery {
+  -webkit-mask-image: url('/brand/icons/instant-delivery.svg');
+  mask-image: url('/brand/icons/instant-delivery.svg');
+}
+
+.icon--linktree {
+  -webkit-mask-image: url('/brand/icons/linktree.svg');
+  mask-image: url('/brand/icons/linktree.svg');
+}
+
+.icon--payment {
+  -webkit-mask-image: url('/brand/icons/payment.svg');
+  mask-image: url('/brand/icons/payment.svg');
+}
+
+.icon--region {
+  -webkit-mask-image: url('/brand/icons/region.svg');
+  mask-image: url('/brand/icons/region.svg');
+}
+
+.icon--secure-purchase {
+  -webkit-mask-image: url('/brand/icons/secure-purchase.svg');
+  mask-image: url('/brand/icons/secure-purchase.svg');
+}
+
+.icon--tiktok {
+  -webkit-mask-image: url('/brand/icons/tiktok.svg');
+  mask-image: url('/brand/icons/tiktok.svg');
+}
+
+.icon--whatsapp-contact {
+  -webkit-mask-image: url('/brand/icons/whatsapp-contact.svg');
+  mask-image: url('/brand/icons/whatsapp-contact.svg');
 }
 
 a:focus-visible {

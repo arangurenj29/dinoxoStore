@@ -21,12 +21,8 @@ function uniqueValues(values) {
 
 function createIcon() {
   const icon = document.createElement('span');
-  icon.className = 'icon';
+  icon.className = 'icon icon--whatsapp-contact';
   icon.setAttribute('aria-hidden', 'true');
-  icon.style.setProperty(
-    '--icon-source',
-    "url('/brand/icons/whatsapp-contact.svg')",
-  );
   return icon;
 }
 
