@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  JUMP_DURATION_MS,
+  JUMP_GUARD_DURATION_MS,
   canJump,
   createInitialRunnerState,
   paceFromScore,
@@ -11,6 +13,8 @@ import {
 
 test('Nox Runner inicia con una partida limpia', () => {
   assert.deepEqual(createInitialRunnerState(), { score: 0, pace: 1 });
+  assert.equal(JUMP_DURATION_MS, 720);
+  assert.equal(JUMP_GUARD_DURATION_MS, 900);
 });
 
 test('Nox Runner suma puntos según el tiempo recorrido', () => {

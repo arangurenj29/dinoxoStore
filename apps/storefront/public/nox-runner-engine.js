@@ -1,4 +1,6 @@
 export const SCORE_INTERVAL_MS = 100;
+export const JUMP_DURATION_MS = 720;
+export const JUMP_GUARD_DURATION_MS = 900;
 
 export function createInitialRunnerState() {
   return { score: 0, pace: 1 };

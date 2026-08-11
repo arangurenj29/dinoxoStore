@@ -1,4 +1,6 @@
 import {
+  JUMP_DURATION_MS,
+  JUMP_GUARD_DURATION_MS,
   canJump,
   createInitialRunnerState,
   paceFromScore,
@@ -11,6 +13,7 @@ const runner = document.querySelector('[data-nox-runner]');
 if (runner) {
   const arena = runner.querySelector('[data-runner-arena]');
   const character = runner.querySelector('[data-runner-character]');
+  const hitbox = runner.querySelector('[data-runner-hitbox]');
   const message = runner.querySelector('[data-runner-message]');
   const pace = runner.querySelector('[data-runner-pace]');
   const result = runner.querySelector('[data-runner-result]');
@@ -22,6 +25,7 @@ if (runner) {
   let isJumping = false;
   let isRunning = false;
   let obstacleTimeout = 0;
+  let safeUntil = 0;
   let startedAt = 0;
   let state = createInitialRunnerState();
 
@@ -80,8 +84,8 @@ if (runner) {
   }
 
   function checkCollision() {
-    if (!isRunning || isJumping) return;
-    const characterBounds = character.getBoundingClientRect();
+    if (!isRunning || isJumping || performance.now() < safeUntil) return;
+    const characterBounds = hitbox.getBoundingClientRect();
     const collided = [...arena.querySelectorAll('[data-runner-obstacle]')].some(
       (obstacle) =>
         rectanglesOverlap(
@@ -108,12 +112,13 @@ if (runner) {
   function jump() {
     if (!canJump({ isRunning, isJumping })) return;
     isJumping = true;
+    safeUntil = performance.now() + JUMP_GUARD_DURATION_MS;
     character.classList.add('is-jumping');
     message.textContent = '¡Buen salto! Seguí corriendo.';
     window.setTimeout(() => {
       isJumping = false;
       character.classList.remove('is-jumping');
-    }, 620);
+    }, JUMP_DURATION_MS);
   }
 
   function startRun() {
@@ -121,6 +126,7 @@ if (runner) {
     clearObstacles();
     state = createInitialRunnerState();
     isJumping = false;
+    safeUntil = 0;
     isRunning = true;
     startedAt = performance.now();
     arena.dataset.runnerState = 'playing';

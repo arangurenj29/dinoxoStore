@@ -2189,8 +2189,18 @@ a {
   filter: blur(0.5rem);
 }
 
+.nox-runner__hitbox {
+  position: absolute;
+  z-index: 4;
+  bottom: 16%;
+  left: 36%;
+  width: 31%;
+  height: 29%;
+  pointer-events: none;
+}
+
 .nox-runner__character.is-jumping {
-  animation: nox-jump 620ms var(--dx-ease-standard) both;
+  animation: nox-jump 720ms var(--dx-ease-standard) both;
 }
 
 .nox-runner__obstacle {

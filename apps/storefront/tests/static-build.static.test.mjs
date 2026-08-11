@@ -160,6 +160,7 @@ test('Nox Runner es público, jugable y no solicita información personal', asyn
   );
   assert.match(html, /data-nox-runner/);
   assert.match(html, /data-runner-arena/);
+  assert.match(html, /data-runner-hitbox/);
   assert.match(html, /data-runner-start/);
   assert.match(html, /src="\/nox-runner\.js" type="module"/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
