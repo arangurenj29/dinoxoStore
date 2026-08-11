@@ -553,7 +553,7 @@ a {
 .step-item {
   position: relative;
   display: grid;
-  min-height: 19rem;
+  min-height: 23rem;
   padding: clamp(var(--dx-space-8), 5vw, var(--dx-space-12)) var(--dx-space-8);
   grid-template-columns: 1fr;
   align-content: end;
@@ -602,6 +602,67 @@ a {
 
 .step-item:hover .step-index {
   color: rgb(148 209 255 / 18%);
+}
+
+.step-mascot {
+  position: absolute;
+  top: var(--dx-space-3);
+  left: var(--dx-space-5);
+  width: min(72%, 14.5rem);
+  margin: 0;
+  pointer-events: none;
+}
+
+.step-mascot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 1.1rem 1rem rgb(0 0 0 / 38%));
+  transition: transform var(--dx-motion-normal) var(--dx-ease-standard);
+}
+
+.step-mascot__number {
+  position: absolute;
+  z-index: 1;
+  top: 0.55rem;
+  right: -0.3rem;
+  display: grid;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border: 1px solid rgb(148 209 255 / 45%);
+  border-radius: 50%;
+  background: var(--dx-color-midnight-950);
+  box-shadow: 0 0 1.5rem rgb(36 162 255 / 32%);
+  color: var(--dx-color-blue-200);
+  font-family: var(--dx-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  place-items: center;
+}
+
+.step-mascot--choose {
+  width: min(68%, 13.5rem);
+}
+
+.step-mascot--confirm {
+  top: var(--dx-space-2);
+  left: var(--dx-space-3);
+  width: min(78%, 15rem);
+}
+
+.step-mascot--receive {
+  top: var(--dx-space-1);
+  left: var(--dx-space-5);
+  width: min(70%, 14rem);
+}
+
+.step-item:hover .step-mascot img {
+  transform: translateY(-0.5rem) rotate(-2deg);
+}
+
+.step-item:hover .step-mascot--receive img {
+  transform: translateY(-0.75rem) rotate(3deg);
 }
 
 .step-item .icon,
@@ -2607,8 +2668,17 @@ a:focus-visible {
   }
 
   .step-item {
-    min-height: 15rem;
+    min-height: 21rem;
     padding-inline: var(--dx-space-4);
+  }
+
+  .step-mascot,
+  .step-mascot--choose,
+  .step-mascot--confirm,
+  .step-mascot--receive {
+    top: var(--dx-space-3);
+    left: var(--dx-space-4);
+    width: min(11.5rem, 56vw);
   }
 
   .step-item + .step-item {

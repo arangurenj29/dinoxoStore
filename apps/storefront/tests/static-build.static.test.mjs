@@ -112,6 +112,10 @@ test('el recorrido comercial conecta el catálogo publicado y sus CTAs', async (
   assert.match(html, /catalog-client|\/api\/catalog/i);
   assert.match(html, /https:\/\/www\.instagram\.com\/dinoxo\.store/);
   assert.match(html, /https:\/\/www\.tiktok\.com\/@dinoxo\.store/);
+  assert.equal((html.match(/class="step-mascot /g) ?? []).length, 3);
+  assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-runner-stride-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-runner-jump-v1\.png"/);
   assertNoExecutableClientScript(html, true);
 });
 

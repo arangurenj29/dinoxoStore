@@ -1,20 +1,22 @@
 ---
-import Icon from '../core/Icon.astro';
 import SectionHeading from '../SectionHeading.astro';
 
 const steps = [
   {
-    icon: 'gift-card',
+    mascot: '/brand/mascot/nox-runner-v1.png',
+    pose: 'step-mascot--choose',
     title: 'Elige',
     description: 'Revisa la plataforma, región y denominación que necesitas.',
   },
   {
-    icon: 'whatsapp-contact',
+    mascot: '/brand/mascot/nox-runner-stride-v1.png',
+    pose: 'step-mascot--confirm',
     title: 'Confirma',
     description: 'Escríbenos para confirmar disponibilidad y condiciones.',
   },
   {
-    icon: 'instant-delivery',
+    mascot: '/brand/mascot/nox-runner-jump-v1.png',
+    pose: 'step-mascot--receive',
     title: 'Recibe',
     description: 'Coordinamos la entrega digital después de tu confirmación.',
   },
@@ -41,8 +43,10 @@ const steps = [
             data-reveal="step"
             style={`--reveal-delay: ${index * 90}ms`}
           >
-            <span class="step-index">0{index + 1}</span>
-            <Icon name={step.icon} alt="" />
+            <figure class={`step-mascot ${step.pose}`} aria-hidden="true">
+              <span class="step-mascot__number">0{index + 1}</span>
+              <img src={step.mascot} alt="" width="1254" height="1254" />
+            </figure>
             <div>
               <h3>{step.title}</h3>
               <p>{step.description}</p>
