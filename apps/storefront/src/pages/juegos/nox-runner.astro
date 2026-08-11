@@ -1,0 +1,109 @@
+---
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Nox Runner | Dinoxo Store"
+  description="Nox Runner: el runner original del Arcade Dinoxo, para jugar sin registro."
+  canonicalUrl="https://dinoxostore.com/juegos/nox-runner/"
+>
+  <SiteHeader homeHref="/" linkPrefix="/" />
+  <main class="game-page nox-runner-page">
+    <section class="runner-intro" aria-labelledby="nox-runner-title">
+      <div class="runner-intro__grid" aria-hidden="true"></div>
+      <div class="runner-intro__content">
+        <p class="game-intro__eyebrow">Modo runner · sin registro</p>
+        <h1 id="nox-runner-title">Nox Runner</h1>
+        <p>
+          Nox encontró un camino lleno de glitches. Saltá a tiempo, mantené el
+          ritmo y llevá tu puntaje lo más lejos posible.
+        </p>
+        <div class="game-intro__actions">
+          <a class="game-intro__jump" href="#jugar">Correr con Nox</a>
+          <a class="game-intro__back" href="/juegos/">Ver todos los juegos</a>
+        </div>
+      </div>
+      <img
+        class="runner-intro__mascot"
+        src="/brand/mascot/nox-runner-v1.png"
+        alt=""
+        width="1254"
+        height="1254"
+      />
+    </section>
+
+    <section
+      class="nox-runner"
+      id="jugar"
+      data-nox-runner
+      aria-labelledby="runner-console-title"
+    >
+      <div class="nox-runner__heading">
+        <div>
+          <p class="game-intro__eyebrow">Consola Nox</p>
+          <h2 id="runner-console-title">No frenes.</h2>
+        </div>
+        <p class="nox-runner__rules">
+          Usá <kbd>Espacio</kbd>, <kbd>↑</kbd> o tocá la pista para saltar. Cada segundo
+          suma puntos y el camino acelera.
+        </p>
+      </div>
+
+      <div class="nox-runner__dashboard" aria-label="Estado de la partida">
+        <div><span>Puntos</span><strong data-runner-score>000</strong></div>
+        <div><span>Ritmo</span><strong data-runner-pace>01</strong></div>
+        <div><span>Marca</span><strong data-runner-status>Lista</strong></div>
+      </div>
+
+      <div
+        class="nox-runner__arena"
+        data-runner-arena
+        data-runner-state="idle"
+        aria-describedby="runner-status"
+      >
+        <div class="nox-runner__sky" aria-hidden="true"></div>
+        <div class="nox-runner__stars" aria-hidden="true"></div>
+        <div class="nox-runner__ground" aria-hidden="true"></div>
+        <div
+          class="nox-runner__character"
+          data-runner-character
+          aria-hidden="true"
+        >
+          <span class="nox-runner__character-glow"></span>
+          <img
+            src="/brand/mascot/nox-runner-v1.png"
+            alt=""
+            width="1254"
+            height="1254"
+          />
+        </div>
+        <p
+          class="nox-runner__status"
+          id="runner-status"
+          aria-live="polite"
+          data-runner-message
+        >
+          Presioná iniciar y ayudá a Nox a esquivar los glitches.
+        </p>
+      </div>
+
+      <div class="nox-runner__controls">
+        <button class="dino-rush__start" type="button" data-runner-start
+          >Iniciar carrera</button
+        >
+        <p data-runner-result hidden></p>
+      </div>
+    </section>
+
+    <section class="game-note" aria-label="Nota de privacidad">
+      <p>
+        Este juego es solo para divertirte. Los puntos viven en esta partida: no
+        los almacenamos ni solicitamos datos personales.
+      </p>
+    </section>
+  </main>
+  <SiteFooter />
+  <script src="/nox-runner.js" type="module" is:inline></script>
+</BaseLayout>

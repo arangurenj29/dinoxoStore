@@ -58,7 +58,7 @@ test('la portada estática es semántica y coincide con el entorno desplegado', 
     html,
     /<script[^>]*src="\/catalog-client\.js"[^>]*type="module"/i,
   );
-  assert.match(html, /href="\/juegos\/dino-rush\/"/);
+  assert.match(html, /href="\/juegos\/"/);
   assertNoExecutableClientScript(html, true);
 });
 
@@ -128,6 +128,42 @@ test('Dino Rush es público, jugable y no solicita información personal', async
   assert.match(html, /data-game-start/);
   assert.match(html, /src="\/dino-rush\.js" type="module"/);
   assert.match(html, /No solicitamos ni almacenamos datos personales\./);
+  assert.doesNotMatch(html, /<form[\s>]/i);
+  assert.doesNotMatch(html, /<input[\s>]/i);
+  assert.doesNotMatch(html, /\/api\/(?:games|leads)/i);
+});
+
+test('el Arcade Dinoxo permite elegir juegos públicos sin capturar datos', async () => {
+  const html = await readArtifact('juegos/index.html');
+
+  assert.match(html, /<title>Arcade Dinoxo \| Dinoxo Store<\/title>/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/">/,
+  );
+  assert.match(html, /href="\/juegos\/dino-rush\/"/);
+  assert.match(html, /href="\/juegos\/nox-runner\/"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
+  assert.match(html, /No pedimos ni almacenamos tus datos\./);
+  assert.doesNotMatch(html, /<form[\s>]/i);
+  assert.doesNotMatch(html, /<input[\s>]/i);
+  assertNoExecutableClientScript(html);
+});
+
+test('Nox Runner es público, jugable y no solicita información personal', async () => {
+  const html = await readArtifact('juegos/nox-runner/index.html');
+
+  assert.match(html, /<title>Nox Runner \| Dinoxo Store<\/title>/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/nox-runner\/">/,
+  );
+  assert.match(html, /data-nox-runner/);
+  assert.match(html, /data-runner-arena/);
+  assert.match(html, /data-runner-start/);
+  assert.match(html, /src="\/nox-runner\.js" type="module"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
+  assert.match(html, /no los almacenamos ni solicitamos datos personales/i);
   assert.doesNotMatch(html, /<form[\s>]/i);
   assert.doesNotMatch(html, /<input[\s>]/i);
   assert.doesNotMatch(html, /\/api\/(?:games|leads)/i);

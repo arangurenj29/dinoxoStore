@@ -9,7 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   description="Dino Rush: un minijuego rápido de Dinoxo Store para jugar sin registro."
   canonicalUrl="https://dinoxostore.com/juegos/dino-rush/"
 >
-  <SiteHeader homeHref="/" linkPrefix="/" showGameLink={false} />
+  <SiteHeader homeHref="/" linkPrefix="/" />
   <main class="game-page">
     <section class="game-intro" aria-labelledby="dino-rush-title">
       <div class="game-intro__grid" aria-hidden="true"></div>
@@ -20,7 +20,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           Captura la energía azul antes de que desaparezca. Treinta segundos,
           ritmo rápido y cero formularios.
         </p>
-        <a class="game-intro__jump" href="#jugar">Entrar a la partida</a>
+        <div class="game-intro__actions">
+          <a class="game-intro__jump" href="#jugar">Entrar a la partida</a>
+          <a class="game-intro__back" href="/juegos/">Ver todos los juegos</a>
+        </div>
       </div>
       <div class="game-intro__orb game-intro__orb--one" aria-hidden="true">
       </div>
