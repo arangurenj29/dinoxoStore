@@ -1702,7 +1702,7 @@ a {
 
 .game-selector__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1.16fr) minmax(19rem, 0.84fr);
   margin-top: var(--dx-space-10);
   gap: var(--dx-space-5);
 }
@@ -1716,6 +1716,18 @@ a {
   border-radius: var(--dx-radius-lg);
   background: linear-gradient(150deg, rgb(16 27 42 / 98%), rgb(3 10 18 / 98%));
   box-shadow: var(--dx-shadow-raised);
+}
+
+.game-card--featured {
+  min-height: 36rem;
+  border-color: rgb(148 209 255 / 32%);
+  background:
+    radial-gradient(
+      circle at 74% 28%,
+      rgb(23 139 255 / 19%),
+      transparent 17rem
+    ),
+    linear-gradient(150deg, rgb(16 32 54 / 98%), rgb(3 10 18 / 98%));
 }
 
 .game-card::after {
@@ -1854,6 +1866,22 @@ a {
   text-transform: uppercase;
 }
 
+.game-card__featured-label {
+  display: inline-flex;
+  margin: var(--dx-space-4) 0 0;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgb(148 209 255 / 28%);
+  border-radius: var(--dx-radius-pill);
+  background: rgb(36 162 255 / 11%);
+  color: var(--dx-color-blue-200);
+  font-family: var(--dx-font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .game-card h3 {
   margin: var(--dx-space-3) 0 0;
   color: var(--dx-color-silver-100);
@@ -1863,7 +1891,8 @@ a {
   line-height: 0.9;
 }
 
-.game-card__content > p:not(.game-card__number) {
+.game-card__content
+  > p:not(.game-card__number):not(.game-card__featured-label) {
   max-width: 28ch;
   margin: var(--dx-space-4) 0 0;
   color: var(--dx-color-slate-300);
@@ -2109,15 +2138,43 @@ a {
   bottom: 9%;
   left: 9%;
   width: clamp(9rem, 20vw, 14rem);
+  aspect-ratio: 1;
   transform-origin: center bottom;
 }
 
 .nox-runner__character img {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
   display: block;
   width: 100%;
   filter: drop-shadow(0 1rem 1rem rgb(0 0 0 / 55%));
+}
+
+.nox-runner__frame {
+  opacity: 0;
+}
+
+.nox-runner__frame--run-a {
+  opacity: 1;
+}
+
+.nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-a {
+  animation: nox-run-a 340ms steps(1, end) infinite;
+}
+
+.nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-b {
+  animation: nox-run-b 340ms steps(1, end) infinite;
+}
+
+.nox-runner__character.is-jumping .nox-runner__frame--run-a,
+.nox-runner__character.is-jumping .nox-runner__frame--run-b {
+  animation: none;
+  opacity: 0;
+}
+
+.nox-runner__character.is-jumping .nox-runner__frame--jump {
+  opacity: 1;
 }
 
 .nox-runner__character-glow {
@@ -2368,6 +2425,30 @@ a:focus-visible {
 
   48% {
     transform: translateY(-8.75rem) rotate(-8deg);
+  }
+}
+
+@keyframes nox-run-a {
+  0%,
+  49.999% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes nox-run-b {
+  0%,
+  49.999% {
+    opacity: 0;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
   }
 }
 
@@ -2806,6 +2887,7 @@ a:focus-visible {
   .arcade-hero__ring,
   .runner-intro__mascot,
   .nox-runner__character.is-jumping,
+  .nox-runner__frame,
   .nox-runner__obstacle {
     animation: none;
   }
