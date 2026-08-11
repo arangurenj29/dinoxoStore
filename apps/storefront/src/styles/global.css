@@ -1646,6 +1646,12 @@ a {
   animation: mascot-float 5.5s var(--dx-ease-standard) infinite alternate;
 }
 
+.runner-intro__mascot,
+.game-card__visual--runner img,
+.nox-runner__character img {
+  height: auto;
+}
+
 .arcade-hero__ring {
   position: absolute;
   border: 1px solid rgb(148 209 255 / 25%);
