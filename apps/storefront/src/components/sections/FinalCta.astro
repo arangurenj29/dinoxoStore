@@ -6,16 +6,27 @@ import Icon from '../core/Icon.astro';
 
 <section id="contacto" class="final-cta" aria-labelledby="contact-title">
   <div class="final-cta__inner" data-reveal="cta">
-    <p class="section-eyebrow">¿Listo para consultar?</p>
-    <h2 id="contact-title">
-      Tu siguiente recarga empieza con una conversación.
-    </h2>
-    <p>
-      Cuéntanos qué plataforma, región y denominación necesitas. Te
-      responderemos con la información disponible.
-    </p>
-    <ButtonLink href={whatsappHref} label="Abrir WhatsApp">
-      <Icon slot="icon" name="whatsapp-contact" alt="" />
-    </ButtonLink>
+    <div class="final-cta__copy">
+      <p class="section-eyebrow">¿Listo para consultar?</p>
+      <h2 id="contact-title">
+        Tu siguiente recarga empieza con una conversación.
+      </h2>
+      <p>
+        Cuéntanos qué plataforma, región y denominación necesitas. Te
+        responderemos con la información disponible.
+      </p>
+      <ButtonLink href={whatsappHref} label="Abrir WhatsApp">
+        <Icon slot="icon" name="whatsapp-contact" alt="" />
+      </ButtonLink>
+    </div>
+    <figure class="final-cta__mascot" aria-hidden="true">
+      <img
+        src="/brand/mascot/nox-contact-v1.png"
+        alt=""
+        width="1024"
+        height="1536"
+        decoding="async"
+      />
+    </figure>
   </div>
 </section>

@@ -116,6 +116,7 @@ test('el recorrido comercial conecta el catálogo publicado y sus CTAs', async (
   assert.match(html, /src="\/brand\/mascot\/nox-step-choose-v1\.png"/);
   assert.match(html, /src="\/brand\/mascot\/nox-step-confirm-v1\.png"/);
   assert.match(html, /src="\/brand\/mascot\/nox-step-receive-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-contact-v1\.png"/);
   assertNoExecutableClientScript(html, true);
 });
 

@@ -1001,6 +1001,17 @@ a {
 
 .final-cta__inner {
   position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 28rem;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 27rem);
+  gap: var(--dx-space-8);
+  align-items: center;
+}
+
+.final-cta__copy {
+  position: relative;
+  z-index: 1;
 }
 
 .final-cta h2 {
@@ -1009,6 +1020,23 @@ a {
 
 .final-cta .button-link {
   margin-top: var(--dx-space-8);
+}
+
+.final-cta__mascot {
+  width: min(100%, 27rem);
+  margin: 0;
+  justify-self: end;
+  pointer-events: none;
+}
+
+.final-cta__mascot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 1.5rem 2rem rgb(0 0 0 / 50%));
+  transform-origin: 70% 85%;
+  animation: contact-mascot-listening 4.8s var(--dx-ease-standard) infinite
+    alternate;
 }
 
 .site-footer {
@@ -2502,6 +2530,16 @@ a:focus-visible {
   }
 }
 
+@keyframes contact-mascot-listening {
+  from {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  to {
+    transform: translateY(-0.7rem) rotate(1.25deg);
+  }
+}
+
 @keyframes nox-jump {
   0%,
   100% {
@@ -2719,6 +2757,17 @@ a:focus-visible {
   .step-item + .step-item {
     border-top: 1px solid var(--dx-border);
     border-left: 0;
+  }
+
+  .final-cta__inner {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: var(--dx-space-3);
+  }
+
+  .final-cta__mascot {
+    width: min(16rem, 76vw);
+    margin-top: calc(var(--dx-space-4) * -1);
   }
 
   .step-index {
@@ -3001,6 +3050,7 @@ a:focus-visible {
   .arcade-hero__mascot,
   .arcade-hero__ring,
   .runner-intro__mascot,
+  .final-cta__mascot img,
   .nox-runner__character,
   .nox-runner__character.is-jumping,
   .nox-runner__frame,
