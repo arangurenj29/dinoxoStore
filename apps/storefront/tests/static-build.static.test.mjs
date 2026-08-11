@@ -149,30 +149,17 @@ test('el Arcade Dinoxo permite elegir juegos públicos sin capturar datos', asyn
   assert.match(html, /href="\/juegos\/dino-rush\/"/);
   assert.match(html, /href="\/juegos\/nox-runner\/"/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
-  for (const [frame, version] of [
-    [1, 1],
-    [2, 2],
-    [3, 2],
-    [4, 3],
-  ]) {
-    assert.match(
-      html,
-      new RegExp(
-        `src="\\/brand\\/mascot\\/nox-run-cycle-${frame}-v${version}\\.png"`,
-      ),
-    );
-    assert.match(
-      html,
-      new RegExp(
-        `class="game-card__runner-frame game-card__runner-frame--${frame}"`,
-      ),
-    );
-  }
-  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-5-v3\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-1-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-opposite-v4\.png"/);
   assert.match(
     html,
-    /class="game-card__runner-frame game-card__runner-frame--5"/,
+    /class="game-card__runner-frame game-card__runner-frame--1"/,
   );
+  assert.match(
+    html,
+    /class="game-card__runner-frame game-card__runner-frame--2"/,
+  );
+  assert.doesNotMatch(html, /game-card__runner-frame--3/);
   assert.match(html, /No pedimos ni almacenamos tus datos\./);
   assert.doesNotMatch(html, /<form[\s>]/i);
   assert.doesNotMatch(html, /<input[\s>]/i);
@@ -192,25 +179,11 @@ test('Nox Runner es público, jugable y no solicita información personal', asyn
   assert.match(html, /data-runner-hitbox/);
   assert.match(html, /data-runner-start/);
   assert.match(html, /src="\/nox-runner\.js" type="module"/);
-  for (const [frame, version] of [
-    [1, 1],
-    [2, 2],
-    [3, 2],
-    [4, 3],
-  ]) {
-    assert.match(
-      html,
-      new RegExp(
-        `src="\\/brand\\/mascot\\/nox-run-cycle-${frame}-v${version}\\.png"`,
-      ),
-    );
-    assert.match(
-      html,
-      new RegExp(`class="nox-runner__frame nox-runner__frame--run-${frame}"`),
-    );
-  }
-  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-5-v3\.png"/);
-  assert.match(html, /class="nox-runner__frame nox-runner__frame--run-5"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-1-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-opposite-v4\.png"/);
+  assert.match(html, /class="nox-runner__frame nox-runner__frame--run-1"/);
+  assert.match(html, /class="nox-runner__frame nox-runner__frame--run-2"/);
+  assert.doesNotMatch(html, /nox-runner__frame--run-3/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-jump-v1\.png"/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-loss-v1\.png"/);
   assert.match(html, /class="nox-runner__frame nox-runner__frame--loss"/);
