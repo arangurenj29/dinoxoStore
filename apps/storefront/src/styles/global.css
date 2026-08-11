@@ -1925,7 +1925,7 @@ a {
 
 .game-card__runner-frame {
   opacity: 0;
-  animation: runner-card-frame 640ms steps(1, end) infinite;
+  animation: runner-card-frame 750ms steps(1, end) infinite;
 }
 
 .game-card__runner-frame--1 {
@@ -1933,15 +1933,19 @@ a {
 }
 
 .game-card__runner-frame--2 {
-  animation-delay: -160ms;
+  animation-delay: -150ms;
 }
 
 .game-card__runner-frame--3 {
-  animation-delay: -320ms;
+  animation-delay: -300ms;
 }
 
 .game-card__runner-frame--4 {
-  animation-delay: -480ms;
+  animation-delay: -450ms;
+}
+
+.game-card__runner-frame--5 {
+  animation-delay: -600ms;
 }
 
 .game-card__runner-line {
@@ -1951,14 +1955,14 @@ a {
   width: 55%;
   height: 1px;
   background: rgb(148 209 255 / 38%);
-  animation: runner-card-streak 640ms linear infinite;
+  animation: runner-card-streak 750ms linear infinite;
 }
 
 .game-card__runner-line--short {
   bottom: 25%;
   width: 37%;
   opacity: 0.65;
-  animation-delay: -320ms;
+  animation-delay: -375ms;
 }
 
 .game-card__content {
@@ -2273,7 +2277,7 @@ a {
 
 .nox-runner__arena[data-runner-state='playing']
   .nox-runner__character:not(.is-jumping) {
-  animation: nox-running-body 640ms linear infinite;
+  animation: nox-running-body 750ms linear infinite;
 }
 
 .nox-runner__frame {
@@ -2288,26 +2292,32 @@ a {
 .nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-1,
 .nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-2,
 .nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-3,
-.nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-4 {
-  animation: nox-run-frame 640ms steps(1, end) infinite;
+.nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-4,
+.nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-5 {
+  animation: nox-run-frame 750ms steps(1, end) infinite;
 }
 
 .nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-2 {
-  animation-delay: -160ms;
+  animation-delay: -150ms;
 }
 
 .nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-3 {
-  animation-delay: -320ms;
+  animation-delay: -300ms;
 }
 
 .nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-4 {
-  animation-delay: -480ms;
+  animation-delay: -450ms;
+}
+
+.nox-runner__arena[data-runner-state='playing'] .nox-runner__frame--run-5 {
+  animation-delay: -600ms;
 }
 
 .nox-runner__character.is-jumping .nox-runner__frame--run-1,
 .nox-runner__character.is-jumping .nox-runner__frame--run-2,
 .nox-runner__character.is-jumping .nox-runner__frame--run-3,
-.nox-runner__character.is-jumping .nox-runner__frame--run-4 {
+.nox-runner__character.is-jumping .nox-runner__frame--run-4,
+.nox-runner__character.is-jumping .nox-runner__frame--run-5 {
   animation: none;
   opacity: 0;
 }
@@ -2658,11 +2668,11 @@ a:focus-visible {
 
 @keyframes nox-run-frame {
   0%,
-  24.999% {
+  19.999% {
     opacity: 1;
   }
 
-  25%,
+  20%,
   100% {
     opacity: 0;
   }
@@ -2717,12 +2727,12 @@ a:focus-visible {
 
 @keyframes runner-card-frame {
   0%,
-  24.999% {
+  19.999% {
     opacity: 1;
     transform: translate(-0.25rem, -0.25rem) rotate(-8deg) scale(1.01);
   }
 
-  25%,
+  20%,
   100% {
     opacity: 0;
     transform: translate(0.25rem, 0.3rem) rotate(-5deg) scale(0.99);

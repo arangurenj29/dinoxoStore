@@ -161,6 +161,11 @@ test('el Arcade Dinoxo permite elegir juegos públicos sin capturar datos', asyn
       ),
     );
   }
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-5-v2\.png"/);
+  assert.match(
+    html,
+    /class="game-card__runner-frame game-card__runner-frame--5"/,
+  );
   assert.match(html, /No pedimos ni almacenamos tus datos\./);
   assert.doesNotMatch(html, /<form[\s>]/i);
   assert.doesNotMatch(html, /<input[\s>]/i);
@@ -190,6 +195,8 @@ test('Nox Runner es público, jugable y no solicita información personal', asyn
       new RegExp(`class="nox-runner__frame nox-runner__frame--run-${frame}"`),
     );
   }
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-5-v2\.png"/);
+  assert.match(html, /class="nox-runner__frame nox-runner__frame--run-5"/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-jump-v1\.png"/);
   assert.match(html, /class="nox-runner__motion-trails"/);
   assert.match(html, /class="nox-runner__dust"/);
