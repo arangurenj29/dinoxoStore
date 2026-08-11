@@ -2326,6 +2326,20 @@ a {
   opacity: 1;
 }
 
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--run-1,
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--run-2,
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--run-3,
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--run-4,
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--run-5,
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--jump {
+  opacity: 0;
+}
+
+.nox-runner__arena[data-runner-state='finished'] .nox-runner__frame--loss {
+  animation: nox-loss-settle 420ms var(--dx-ease-standard) both;
+  opacity: 1;
+}
+
 .nox-runner__character-glow {
   position: absolute;
   right: 15%;
@@ -2675,6 +2689,18 @@ a:focus-visible {
   20%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes nox-loss-settle {
+  from {
+    opacity: 0;
+    transform: translateY(-0.55rem) rotate(3deg) scale(1.035);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
   }
 }
 

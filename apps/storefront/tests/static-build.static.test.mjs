@@ -198,6 +198,8 @@ test('Nox Runner es público, jugable y no solicita información personal', asyn
   assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-5-v2\.png"/);
   assert.match(html, /class="nox-runner__frame nox-runner__frame--run-5"/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-jump-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-runner-loss-v1\.png"/);
+  assert.match(html, /class="nox-runner__frame nox-runner__frame--loss"/);
   assert.match(html, /class="nox-runner__motion-trails"/);
   assert.match(html, /class="nox-runner__dust"/);
   assert.match(html, /no los almacenamos ni solicitamos datos personales/i);
