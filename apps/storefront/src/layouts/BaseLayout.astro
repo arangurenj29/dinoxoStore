@@ -3,12 +3,14 @@ import { resolvePageMetadata, type PageKind } from '../lib/site-metadata';
 import '../styles/global.css';
 
 interface Props {
+  canonicalUrl?: string;
   description?: string;
   pageKind?: PageKind;
   title?: string;
 }
 
 const {
+  canonicalUrl: canonicalUrlOverride,
   description: descriptionOverride,
   pageKind = 'default',
   title: titleOverride,
@@ -19,6 +21,7 @@ const metadata = resolvePageMetadata(
 );
 const description = descriptionOverride ?? metadata.description;
 const title = titleOverride ?? metadata.title;
+const canonicalUrl = canonicalUrlOverride ?? metadata.canonicalUrl;
 ---
 
 <!doctype html>
@@ -33,11 +36,7 @@ const title = titleOverride ?? metadata.title;
       type="image/webp"
       href="/brand/dinoxostore-logo-isolated-v1-320.webp"
     />
-    {
-      metadata.canonicalUrl && (
-        <link rel="canonical" href={metadata.canonicalUrl} />
-      )
-    }
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <title>{title}</title>
   </head>
   <body>

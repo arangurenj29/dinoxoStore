@@ -4,17 +4,30 @@ import { socialLinks } from '../content/social';
 import ButtonLink from './core/ButtonLink.astro';
 import Icon from './core/Icon.astro';
 import Logo from './core/Logo.astro';
+
+interface Props {
+  homeHref?: string;
+  linkPrefix?: string;
+  showGameLink?: boolean;
+}
+
+const {
+  homeHref = '#inicio',
+  linkPrefix = '',
+  showGameLink = true,
+} = Astro.props;
 ---
 
 <header class="site-header" data-site-header>
   <nav class="site-nav" aria-label="Navegación principal">
-    <a class="site-wordmark" href="#inicio" aria-label="Dinoxo Store, inicio">
+    <a class="site-wordmark" href={homeHref} aria-label="Dinoxo Store, inicio">
       <Logo className="site-wordmark__logo" />
       <span>dinoxo.store</span>
     </a>
     <div class="site-nav__links">
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#productos">Productos</a>
+      <a href={`${linkPrefix}#como-funciona`}>Cómo funciona</a>
+      <a href={`${linkPrefix}#productos`}>Productos</a>
+      {showGameLink && <a href="/juegos/dino-rush/">Juega</a>}
     </div>
     <div class="site-nav__actions">
       <div class="site-social-links" role="group" aria-label="Redes oficiales">

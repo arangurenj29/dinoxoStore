@@ -58,6 +58,7 @@ test('la portada estática es semántica y coincide con el entorno desplegado', 
     html,
     /<script[^>]*src="\/catalog-client\.js"[^>]*type="module"/i,
   );
+  assert.match(html, /href="\/juegos\/dino-rush\/"/);
   assertNoExecutableClientScript(html, true);
 });
 
@@ -112,6 +113,24 @@ test('el recorrido comercial conecta el catálogo publicado y sus CTAs', async (
   assert.match(html, /https:\/\/www\.instagram\.com\/dinoxo\.store/);
   assert.match(html, /https:\/\/www\.tiktok\.com\/@dinoxo\.store/);
   assertNoExecutableClientScript(html, true);
+});
+
+test('Dino Rush es público, jugable y no solicita información personal', async () => {
+  const html = await readArtifact('juegos/dino-rush/index.html');
+
+  assert.match(html, /<title>Dino Rush \| Dinoxo Store<\/title>/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/dino-rush\/">/,
+  );
+  assert.match(html, /data-dino-rush/);
+  assert.match(html, /data-game-arena/);
+  assert.match(html, /data-game-start/);
+  assert.match(html, /src="\/dino-rush\.js" type="module"/);
+  assert.match(html, /No solicitamos ni almacenamos datos personales\./);
+  assert.doesNotMatch(html, /<form[\s>]/i);
+  assert.doesNotMatch(html, /<input[\s>]/i);
+  assert.doesNotMatch(html, /\/api\/(?:games|leads)/i);
 });
 
 test('404 es estática, noindex y no declara un canonical engañoso', async () => {

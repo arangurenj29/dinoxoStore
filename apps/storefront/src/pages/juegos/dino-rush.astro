@@ -1,0 +1,100 @@
+---
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Dino Rush | Dinoxo Store"
+  description="Dino Rush: un minijuego rápido de Dinoxo Store para jugar sin registro."
+  canonicalUrl="https://dinoxostore.com/juegos/dino-rush/"
+>
+  <SiteHeader homeHref="/" linkPrefix="/" showGameLink={false} />
+  <main class="game-page">
+    <section class="game-intro" aria-labelledby="dino-rush-title">
+      <div class="game-intro__grid" aria-hidden="true"></div>
+      <div class="game-intro__content">
+        <p class="game-intro__eyebrow">Modo arcade · sin registro</p>
+        <h1 id="dino-rush-title">Dino Rush</h1>
+        <p>
+          Captura la energía azul antes de que desaparezca. Treinta segundos,
+          ritmo rápido y cero formularios.
+        </p>
+        <a class="game-intro__jump" href="#jugar">Entrar a la partida</a>
+      </div>
+      <div class="game-intro__orb game-intro__orb--one" aria-hidden="true">
+      </div>
+      <div class="game-intro__orb game-intro__orb--two" aria-hidden="true">
+      </div>
+    </section>
+
+    <section
+      class="dino-rush"
+      id="jugar"
+      data-dino-rush
+      aria-labelledby="game-console-title"
+    >
+      <div class="dino-rush__heading">
+        <div>
+          <p class="game-intro__eyebrow">Consola Dinoxo</p>
+          <h2 id="game-console-title">Carga el núcleo.</h2>
+        </div>
+        <p class="dino-rush__rules">
+          Toca los núcleos azules. Si tocas el vacío o uno se escapa, tu combo
+          vuelve a cero.
+        </p>
+      </div>
+
+      <div class="dino-rush__dashboard" aria-label="Estado de la partida">
+        <div>
+          <span>Puntos</span>
+          <strong data-game-score>000</strong>
+        </div>
+        <div>
+          <span>Combo</span>
+          <strong data-game-combo>×0</strong>
+        </div>
+        <div>
+          <span>Tiempo</span>
+          <strong data-game-time>30.0</strong>
+        </div>
+      </div>
+
+      <div
+        class="dino-rush__arena"
+        data-game-arena
+        data-game-state="idle"
+        aria-describedby="game-status"
+      >
+        <div class="dino-rush__scanlines" aria-hidden="true"></div>
+        <div class="dino-rush__core" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <p
+          class="dino-rush__status"
+          id="game-status"
+          aria-live="polite"
+          data-game-status
+        >
+          Presiona iniciar para activar la consola.
+        </p>
+      </div>
+
+      <div class="dino-rush__controls">
+        <button class="dino-rush__start" type="button" data-game-start>
+          Iniciar partida
+        </button>
+        <p data-game-result hidden></p>
+      </div>
+    </section>
+
+    <section class="game-note" aria-label="Nota de privacidad">
+      <p>
+        Este juego es solo para divertirte. No solicitamos ni almacenamos datos
+        personales.
+      </p>
+    </section>
+  </main>
+  <SiteFooter />
+  <script src="/dino-rush.js" type="module" is:inline></script>
+</BaseLayout>
