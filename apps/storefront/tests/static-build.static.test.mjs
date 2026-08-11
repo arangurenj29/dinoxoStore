@@ -149,15 +149,18 @@ test('el Arcade Dinoxo permite elegir juegos públicos sin capturar datos', asyn
   assert.match(html, /href="\/juegos\/dino-rush\/"/);
   assert.match(html, /href="\/juegos\/nox-runner\/"/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
-  assert.match(html, /src="\/brand\/mascot\/nox-runner-stride-v1\.png"/);
-  assert.match(
-    html,
-    /class="game-card__runner-frame game-card__runner-frame--a"/,
-  );
-  assert.match(
-    html,
-    /class="game-card__runner-frame game-card__runner-frame--b"/,
-  );
+  for (const frame of [1, 2, 3, 4]) {
+    assert.match(
+      html,
+      new RegExp(`src="\\/brand\\/mascot\\/nox-run-cycle-${frame}-v1\\.png"`),
+    );
+    assert.match(
+      html,
+      new RegExp(
+        `class="game-card__runner-frame game-card__runner-frame--${frame}"`,
+      ),
+    );
+  }
   assert.match(html, /No pedimos ni almacenamos tus datos\./);
   assert.doesNotMatch(html, /<form[\s>]/i);
   assert.doesNotMatch(html, /<input[\s>]/i);
@@ -177,8 +180,16 @@ test('Nox Runner es público, jugable y no solicita información personal', asyn
   assert.match(html, /data-runner-hitbox/);
   assert.match(html, /data-runner-start/);
   assert.match(html, /src="\/nox-runner\.js" type="module"/);
-  assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
-  assert.match(html, /src="\/brand\/mascot\/nox-runner-stride-v1\.png"/);
+  for (const frame of [1, 2, 3, 4]) {
+    assert.match(
+      html,
+      new RegExp(`src="\\/brand\\/mascot\\/nox-run-cycle-${frame}-v1\\.png"`),
+    );
+    assert.match(
+      html,
+      new RegExp(`class="nox-runner__frame nox-runner__frame--run-${frame}"`),
+    );
+  }
   assert.match(html, /src="\/brand\/mascot\/nox-runner-jump-v1\.png"/);
   assert.match(html, /class="nox-runner__motion-trails"/);
   assert.match(html, /class="nox-runner__dust"/);
