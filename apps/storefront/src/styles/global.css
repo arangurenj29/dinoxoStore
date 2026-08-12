@@ -2529,6 +2529,11 @@ a {
   mask-image: url('/brand/icons/tiktok.svg');
 }
 
+.icon--usa-flag {
+  -webkit-mask-image: url('/brand/icons/usa-flag.svg');
+  mask-image: url('/brand/icons/usa-flag.svg');
+}
+
 .icon--whatsapp-contact {
   -webkit-mask-image: url('/brand/icons/whatsapp-contact.svg');
   mask-image: url('/brand/icons/whatsapp-contact.svg');
