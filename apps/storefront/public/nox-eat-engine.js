@@ -542,9 +542,20 @@ export function resolveCollisions(state) {
   }
 
   const defeated = lives <= 0;
-  return { ...state, enemies, score, lives, defeated, stunned, fleeTicks, fleeAccum };
+  return {
+    ...state,
+    enemies,
+    score,
+    lives,
+    defeated,
+    stunned,
+    fleeTicks,
+    fleeAccum,
+  };
 }
 
 export function allEnemiesEaten(state) {
-  return state.enemies.length > 0 && state.enemies.every((enemy) => enemy.eaten);
+  return (
+    state.enemies.length > 0 && state.enemies.every((enemy) => enemy.eaten)
+  );
 }

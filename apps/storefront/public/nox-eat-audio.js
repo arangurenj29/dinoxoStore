@@ -18,7 +18,16 @@ export class NoxEatAudio {
     this.ctx = null;
     this.musicTimer = null;
     this.stepIndex = 0;
-    this.melody = [NOTE.C5, NOTE.E5, NOTE.G5, NOTE.E5, NOTE.F5, NOTE.G5, NOTE.E5, NOTE.C5];
+    this.melody = [
+      NOTE.C5,
+      NOTE.E5,
+      NOTE.G5,
+      NOTE.E5,
+      NOTE.F5,
+      NOTE.G5,
+      NOTE.E5,
+      NOTE.C5,
+    ];
   }
 
   ensure() {
@@ -129,7 +138,16 @@ export class NoxEatAudio {
   playGameOver() {
     this.ensure();
     if (!this.ctx) return;
-    const sequence = [NOTE.G5, NOTE.E5, NOTE.C5, NOTE.A4, NOTE.F4, NOTE.D4, NOTE.B3, NOTE.G3];
+    const sequence = [
+      NOTE.G5,
+      NOTE.E5,
+      NOTE.C5,
+      NOTE.A4,
+      NOTE.F4,
+      NOTE.D4,
+      NOTE.B3,
+      NOTE.G3,
+    ];
     sequence.forEach((note, index) => {
       this.blip(note, index * 0.17, 0.2, 'square', 0.09);
     });

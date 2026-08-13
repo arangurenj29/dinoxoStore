@@ -135,7 +135,10 @@ if (game) {
 
   function fitBoard() {
     const available = arenaEl.clientWidth - 8;
-    const cell = Math.max(13, Math.min(46, Math.floor(available / state.width)));
+    const cell = Math.max(
+      13,
+      Math.min(46, Math.floor(available / state.width)),
+    );
     arenaEl.style.setProperty('--nox-eat-cell', `${cell}px`);
   }
 
@@ -197,7 +200,10 @@ if (game) {
       enemyEl.style.setProperty('--nox-eat-x', enemy.x);
       enemyEl.style.setProperty('--nox-eat-y', enemy.y);
       enemyEl.hidden = enemy.eaten;
-      enemyEl.classList.toggle('nox-eat__enemy--vulnerable', state.mode === 'red');
+      enemyEl.classList.toggle(
+        'nox-eat__enemy--vulnerable',
+        state.mode === 'red',
+      );
       enemyEl.classList.toggle('nox-eat__enemy--scatter', state.fleeTicks > 0);
     }
   }
@@ -248,8 +254,7 @@ if (game) {
       preserveLivesOnNext = true;
       audio.playGrowl();
       overlayTitle.textContent = '¡RICO! NOX ESTÁ SATISFECHO PERO QUIERE MÁS';
-      overlayText.textContent =
-        `Nivel ${state.level} superado. Nivel ${level}: +1 dragón y un tablero más grande.`;
+      overlayText.textContent = `Nivel ${state.level} superado. Nivel ${level}: +1 dragón y un tablero más grande.`;
       startButton.textContent = 'Siguiente nivel';
     }
     overlay.hidden = false;
@@ -296,10 +301,14 @@ if (game) {
               audio.playCard();
               statusMessage = `+${meta.points} puntos · ${meta.label}`;
               const cardType = state.maze[state.player.y][state.player.x];
-              const beforeEnemies = state.enemies.filter((enemy) => !enemy.eaten).length;
+              const beforeEnemies = state.enemies.filter(
+                (enemy) => !enemy.eaten,
+              ).length;
               state = explodeCard(state);
               showExplosion(cardType);
-              const killed = beforeEnemies - state.enemies.filter((enemy) => !enemy.eaten).length;
+              const killed =
+                beforeEnemies -
+                state.enemies.filter((enemy) => !enemy.eaten).length;
               if (killed > 0) {
                 audio.playEnemy();
                 statusMessage += ` · ¡Boom! ${killed} dragón${killed > 1 ? 'es' : ''}`;

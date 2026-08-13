@@ -184,7 +184,9 @@ export async function fetchPublicCatalog(
     return catalogResponse({ products: [], error: 'catalog_unavailable' }, 502);
   }
 
-  return catalogResponse({ products: normalizePublicCatalog(rows, origin.origin) });
+  return catalogResponse({
+    products: normalizePublicCatalog(rows, origin.origin),
+  });
 }
 
 function toHttpsUrl(url: URL): string {

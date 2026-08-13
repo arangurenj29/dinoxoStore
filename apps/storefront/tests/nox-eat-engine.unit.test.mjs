@@ -9,7 +9,6 @@ import {
   CARDS_PER_TYPE,
   ENEMY_POINTS,
   ENEMY_SENSE_RANGE,
-  FLEE_STEP_EVERY,
   FLEE_TICKS,
   LIVES,
   MODE_TICKS,
@@ -79,12 +78,7 @@ function makeFixedState(maze) {
   };
 }
 
-const OPEN = [
-  '##########',
-  '#........#',
-  '#........#',
-  '##########',
-];
+const OPEN = ['##########', '#........#', '#........#', '##########'];
 
 const BIG = [
   '####################',
@@ -408,7 +402,13 @@ test('Nox Eat: allEnemiesEaten detecta cuando no quedan dragones', () => {
     ],
   };
   assert.equal(allEnemiesEaten(state), true);
-  state = { ...state, enemies: [{ x: 3, y: 1, eaten: true }, { x: 5, y: 1, eaten: false }] };
+  state = {
+    ...state,
+    enemies: [
+      { x: 3, y: 1, eaten: true },
+      { x: 5, y: 1, eaten: false },
+    ],
+  };
   assert.equal(allEnemiesEaten(state), false);
   assert.equal(allEnemiesEaten({ ...state, enemies: [] }), false);
 });
@@ -458,7 +458,10 @@ test('Nox Eat: la explosión quema en forma de letra y mata a los dragones de la
   const eatenEnemies = state.enemies
     .filter((enemy) => enemy.eaten)
     .map((e) => `${e.x},${e.y}`);
-  assert.deepEqual(eatenEnemies.sort(), ['1,1', '1,7', '13,6', '7,1', '7,6'].sort());
+  assert.deepEqual(
+    eatenEnemies.sort(),
+    ['1,1', '1,7', '13,6', '7,1', '7,6'].sort(),
+  );
 });
 
 test('Nox Eat: la explosión N y X matan solo a sus formas', () => {
@@ -481,7 +484,10 @@ test('Nox Eat: la explosión N y X matan solo a sus formas', () => {
   };
   nState = explodeCard(nState);
   assert.deepEqual(
-    nState.enemies.filter((enemy) => enemy.eaten).map((e) => `${e.x},${e.y}`).sort(),
+    nState.enemies
+      .filter((enemy) => enemy.eaten)
+      .map((e) => `${e.x},${e.y}`)
+      .sort(),
     ['1,1', '1,7', '13,13', '13,7', '7,7'].sort(),
   );
 
@@ -494,7 +500,10 @@ test('Nox Eat: la explosión N y X matan solo a sus formas', () => {
   };
   xState = explodeCard(xState);
   assert.deepEqual(
-    xState.enemies.filter((enemy) => enemy.eaten).map((e) => `${e.x},${e.y}`).sort(),
+    xState.enemies
+      .filter((enemy) => enemy.eaten)
+      .map((e) => `${e.x},${e.y}`)
+      .sort(),
     ['1,1', '13,13', '7,7'].sort(),
   );
 });
@@ -548,7 +557,10 @@ test('Nox Eat: tickFlee hace huir a los dragones cada FLEE_STEP_EVERY ticks', ()
       movedSteps += 1;
     }
   }
-  assert.ok(movedSteps >= 3, `el dragón huyó ${movedSteps} casillas en ${FLEE_TICKS} ticks`);
+  assert.ok(
+    movedSteps >= 3,
+    `el dragón huyó ${movedSteps} casillas en ${FLEE_TICKS} ticks`,
+  );
   assert.equal(state.fleeTicks, 0);
   assert.equal(isWall(state, state.enemies[0].x, state.enemies[0].y), false);
   assert.ok(

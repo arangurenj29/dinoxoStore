@@ -1805,8 +1805,12 @@ a {
 .nox-eat__player {
   position: absolute;
   z-index: 3;
-  left: calc(var(--nox-eat-x, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.24);
-  top: calc(var(--nox-eat-y, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.24);
+  left: calc(
+    var(--nox-eat-x, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.24
+  );
+  top: calc(
+    var(--nox-eat-y, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.24
+  );
   width: calc(var(--nox-eat-cell) * 1.48);
   height: calc(var(--nox-eat-cell) * 1.48);
   margin: 0;
@@ -1820,22 +1824,24 @@ a {
 }
 
 .nox-eat__player--power {
-  filter: drop-shadow(0 0 1rem rgb(255 74 74 / 95%))
-    grayscale(0.3) sepia(1) saturate(6) hue-rotate(-32deg)
-    brightness(1.08);
+  filter: drop-shadow(0 0 1rem rgb(255 74 74 / 95%)) grayscale(0.3) sepia(1)
+    saturate(6) hue-rotate(-32deg) brightness(1.08);
 }
 
 .nox-eat__player--fragile {
-  filter: drop-shadow(0 0 1rem rgb(255 214 64 / 95%))
-    grayscale(0.3) sepia(1) saturate(5) hue-rotate(-8deg)
-    brightness(1.12);
+  filter: drop-shadow(0 0 1rem rgb(255 214 64 / 95%)) grayscale(0.3) sepia(1)
+    saturate(5) hue-rotate(-8deg) brightness(1.12);
 }
 
 .nox-eat__enemy {
   position: absolute;
   z-index: 2;
-  left: calc(var(--nox-eat-x, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.03);
-  top: calc(var(--nox-eat-y, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.03);
+  left: calc(
+    var(--nox-eat-x, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.03
+  );
+  top: calc(
+    var(--nox-eat-y, 1) * var(--nox-eat-cell) - var(--nox-eat-cell) * 0.03
+  );
   width: calc(var(--nox-eat-cell) * 1.06);
   height: calc(var(--nox-eat-cell) * 1.06);
   margin: 0;
@@ -1848,8 +1854,8 @@ a {
 }
 
 .nox-eat__enemy--vulnerable {
-  filter: drop-shadow(0 0 0.8rem rgb(255 255 255 / 85%))
-    grayscale(1) brightness(1.7);
+  filter: drop-shadow(0 0 0.8rem rgb(255 255 255 / 85%)) grayscale(1)
+    brightness(1.7);
 }
 
 .nox-eat__enemy--scatter {
@@ -1859,10 +1865,12 @@ a {
 @keyframes nox-eat-scatter {
   0%,
   100% {
-    filter: grayscale(1) brightness(1.9) drop-shadow(0 0 0.6rem rgb(255 255 255 / 90%));
+    filter: grayscale(1) brightness(1.9)
+      drop-shadow(0 0 0.6rem rgb(255 255 255 / 90%));
   }
   50% {
-    filter: grayscale(1) brightness(0.15) drop-shadow(0 0 0.6rem rgb(0 0 0 / 90%));
+    filter: grayscale(1) brightness(0.15)
+      drop-shadow(0 0 0.6rem rgb(0 0 0 / 90%));
   }
 }
 
@@ -1951,16 +1959,14 @@ a {
   }
   14%,
   42% {
-    filter: drop-shadow(0 0 0.9rem rgb(255 74 74 / 95%))
-      grayscale(0.3) sepia(1) saturate(6) hue-rotate(-32deg)
-      brightness(1.05);
+    filter: drop-shadow(0 0 0.9rem rgb(255 74 74 / 95%)) grayscale(0.3) sepia(1)
+      saturate(6) hue-rotate(-32deg) brightness(1.05);
     transform: scale(1.16, 0.76) rotate(2deg);
   }
   28%,
   56% {
-    filter: drop-shadow(0 0 0.9rem rgb(255 74 74 / 95%))
-      grayscale(0.3) sepia(1) saturate(6) hue-rotate(-32deg)
-      brightness(1.05);
+    filter: drop-shadow(0 0 0.9rem rgb(255 74 74 / 95%)) grayscale(0.3) sepia(1)
+      saturate(6) hue-rotate(-32deg) brightness(1.05);
     transform: scale(0.94, 1.1) rotate(-2deg);
   }
   70% {
