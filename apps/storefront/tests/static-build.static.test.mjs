@@ -123,7 +123,7 @@ test('el recorrido comercial conecta el catálogo publicado y sus CTAs', async (
 test('Dino Rush es público, jugable y no solicita información personal', async () => {
   const html = await readArtifact('juegos/dino-rush/index.html');
 
-  assert.match(html, /<title>Dino Rush \| Dinoxo Store<\/title>/);
+  assert.match(html, /<title>Nox Nucleo \| Dinoxo Store<\/title>/);
   assert.match(
     html,
     /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/dino-rush\/">/,
@@ -141,7 +141,7 @@ test('Dino Rush es público, jugable y no solicita información personal', async
 test('el Arcade Dinoxo permite elegir juegos públicos sin capturar datos', async () => {
   const html = await readArtifact('juegos/index.html');
 
-  assert.match(html, /<title>Arcade Dinoxo \| Dinoxo Store<\/title>/);
+  assert.match(html, /<title>dinoxoArcade \| Dinoxo Store<\/title>/);
   assert.match(
     html,
     /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/">/,
@@ -193,6 +193,41 @@ test('Nox Runner es público, jugable y no solicita información personal', asyn
   assert.doesNotMatch(html, /<form[\s>]/i);
   assert.doesNotMatch(html, /<input[\s>]/i);
   assert.doesNotMatch(html, /\/api\/(?:games|leads)/i);
+});
+
+test('Nox Eat es público, jugable y no solicita información personal', async () => {
+  const html = await readArtifact('juegos/nox-eat/index.html');
+
+  assert.match(html, /<title>Nox Eat \| Dinoxo Store<\/title>/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/nox-eat\/">/,
+  );
+  assert.match(html, /data-nox-eat/);
+  assert.match(html, /data-nox-eat-grid/);
+  assert.match(html, /data-nox-eat-player/);
+  assert.match(html, /data-game-start/);
+  assert.match(html, /src="\/nox-eat\.js" type="module"/);
+  assert.match(html, /No solicitamos ni almacenamos datos personales\./);
+  assert.doesNotMatch(html, /<form[\s>]/i);
+  assert.doesNotMatch(html, /<input[\s>]/i);
+  assert.doesNotMatch(html, /\/api\/(?:games|leads)/i);
+});
+
+test('la zona de Nox es pública y todavía no pide información', async () => {
+  const html = await readArtifact('juegos/nox/index.html');
+
+  assert.match(html, /<title>Nox \| Dinoxo Store<\/title>/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/nox\/">/,
+  );
+  assert.match(html, /nox-zone__inner/);
+  assert.match(html, /Pr[óo]ximamente/);
+  assert.match(html, /No solicitamos ni almacenamos datos personales\./);
+  assert.doesNotMatch(html, /<form[\s>]/i);
+  assert.doesNotMatch(html, /<input[\s>]/i);
+  assertNoExecutableClientScript(html);
 });
 
 test('404 es estática, noindex y no declara un canonical engañoso', async () => {

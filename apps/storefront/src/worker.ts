@@ -30,6 +30,7 @@ interface PublicCatalogMedia {
   mime_type: string;
   position: number;
   storage_path: string;
+  url: string;
   width: number | null;
 }
 
@@ -60,7 +61,10 @@ function asNullableNumber(value: unknown): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
-function normalizePublicCatalog(rows: unknown): PublicCatalogProduct[] {
+function normalizePublicCatalog(
+  rows: unknown,
+  supabaseOrigin: string,
+): PublicCatalogProduct[] {
   if (!Array.isArray(rows)) return [];
 
   return rows.flatMap((row): PublicCatalogProduct[] => {
@@ -121,6 +125,9 @@ function normalizePublicCatalog(rows: unknown): PublicCatalogProduct[] {
                   ? item.position
                   : 0,
               storage_path: item.storage_path,
+              url: `${supabaseOrigin}/storage/v1/object/public/products/${encodeURI(
+                item.storage_path,
+              )}`,
               width: asNullableNumber(item.width),
             },
           ];
@@ -177,7 +184,7 @@ export async function fetchPublicCatalog(
     return catalogResponse({ products: [], error: 'catalog_unavailable' }, 502);
   }
 
-  return catalogResponse({ products: normalizePublicCatalog(rows) });
+  return catalogResponse({ products: normalizePublicCatalog(rows, origin.origin) });
 }
 
 function toHttpsUrl(url: URL): string {

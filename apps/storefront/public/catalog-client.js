@@ -29,19 +29,40 @@ function createIcon() {
 function createCard(product, index) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const variant = variants[0];
+  const media = Array.isArray(product.media) ? product.media : [];
+  const cover = media.find((item) => item?.url) ?? media[0];
   const card = document.createElement('article');
   card.className = 'catalog-card';
   card.dataset.reveal = 'card';
   card.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 80}ms`);
 
+  const banner = document.createElement('div');
+  banner.className = 'catalog-card__banner';
+
+  if (cover) {
+    const frame = document.createElement('div');
+    frame.className = 'catalog-card__media';
+    const image = document.createElement('img');
+    image.src = cover.url;
+    image.alt = text(cover.alt_text, product.name);
+    image.loading = 'lazy';
+    if (cover.width) image.width = cover.width;
+    if (cover.height) image.height = cover.height;
+    frame.append(image);
+    banner.append(frame);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'catalog-card__body';
+
   const status = document.createElement('p');
   status.className = 'catalog-card__status';
   status.textContent = 'Disponible para consultar';
-  card.append(status);
+  body.append(status);
 
   const heading = document.createElement('h3');
   heading.textContent = product.name;
-  card.append(heading);
+  body.append(heading);
 
   const details = document.createElement('dl');
   const platforms = uniqueValues(
@@ -52,7 +73,7 @@ function createCard(product, index) {
   );
   const prices = uniqueValues(variants.map((item) => formatPrice(item)));
   const fields = [
-    ['Valores', prices.length ? prices.join(' · ') : 'Consultar'],
+    ['Precio', prices.length ? prices.join(' · ') : 'Consultar'],
     ['Plataforma', platforms.length ? platforms.join(' · ') : 'Consultar'],
     ['Región', regions.length ? regions.join(' · ') : 'Consultar'],
     ['Entrega', 'Atención por WhatsApp'],
@@ -66,7 +87,7 @@ function createCard(product, index) {
     row.append(term, description);
     details.append(row);
   }
-  card.append(details);
+  body.append(details);
 
   const link = document.createElement('a');
   link.className = 'button-link button-link--secondary';
@@ -75,7 +96,10 @@ function createCard(product, index) {
   const label = document.createElement('span');
   label.textContent = 'Consultar producto';
   link.append(label);
-  card.append(link);
+  body.append(link);
+
+  banner.append(body);
+  card.append(banner);
   return card;
 }
 

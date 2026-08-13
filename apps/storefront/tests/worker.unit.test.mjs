@@ -83,3 +83,39 @@ test('the public catalog contract reads only published products through Supabase
   assert.match(requests[0].url, /archived_at=is\.null/);
   assert.equal(requests[0].init.headers.apikey, 'sb_publishable_test');
 });
+
+test('the public catalog media includes a public storage URL', async () => {
+  const response = await fetchPublicCatalog(
+    'https://yvbrvclbqmvxxtfehxxp.supabase.co',
+    'sb_publishable_test',
+    async () =>
+      new Response(
+        JSON.stringify([
+          {
+            id: 'product-2',
+            slug: 'psn-card',
+            name: 'PSN Card',
+            product_variants: [],
+            product_media: [
+              {
+                id: 'media-1',
+                storage_path: 'product-2/abc-123.png',
+                alt_text: 'PSN card',
+                position: 0,
+                mime_type: 'image/png',
+                width: 600,
+                height: 400,
+              },
+            ],
+          },
+        ]),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      ),
+  );
+
+  const payload = await response.json();
+  assert.equal(
+    payload.products[0].media[0].url,
+    'https://yvbrvclbqmvxxtfehxxp.supabase.co/storage/v1/object/public/products/product-2/abc-123.png',
+  );
+});

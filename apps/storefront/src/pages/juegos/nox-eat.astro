@@ -1,0 +1,148 @@
+---
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Nox Eat | Dinoxo Store"
+  description="Nox Eat: Nox devora gift cards de PS, Nintendo y Xbox por el laberinto. Sin registro."
+  canonicalUrl="https://dinoxostore.com/juegos/nox-eat/"
+>
+  <SiteHeader homeHref="/" linkPrefix="/" />
+  <main class="game-page">
+    <section class="game-intro" aria-labelledby="nox-eat-title">
+      <div class="game-intro__grid" aria-hidden="true"></div>
+      <div class="game-intro__content">
+        <p class="game-intro__eyebrow">Modo arcade · sin registro</p>
+        <h1 id="nox-eat-title">Nox Eat</h1>
+        <p>
+          Nox tiene hambre. Comé los puntos del laberinto y atrapá las gift
+          cards de PlayStation, Nintendo y Xbox para sumar lo máximo.
+        </p>
+        <div class="game-intro__actions">
+          <a class="game-intro__jump" href="#jugar">Entrar a la partida</a>
+          <a class="game-intro__back" href="/juegos/">Ver todos los juegos</a>
+        </div>
+      </div>
+      <div class="game-intro__orb game-intro__orb--one" aria-hidden="true">
+      </div>
+      <div class="game-intro__orb game-intro__orb--two" aria-hidden="true">
+      </div>
+    </section>
+
+    <section
+      class="nox-eat"
+      id="jugar"
+      data-nox-eat
+      aria-labelledby="nox-eat-console-title"
+    >
+      <div class="nox-eat__heading">
+        <div>
+          <p class="game-intro__eyebrow">Consola Nox</p>
+          <h2 id="nox-eat-console-title">Devoralo todo.</h2>
+        </div>
+        <p class="nox-eat__rules">
+          Punto ·1 · 4× PlayStation ·5 · 4× Nintendo ·10 · 4× Xbox ·15.
+          Las gift cards explotan en fuego (P/M/X). Esquivá y comé dragones en
+          modo rojo.
+        </p>
+      </div>
+
+      <div class="nox-eat__dashboard" aria-label="Estado de la partida">
+        <div>
+          <span>Puntos</span>
+          <strong data-game-score>000</strong>
+        </div>
+        <div>
+          <span>Tarjetas</span>
+          <strong data-game-cards>PS 1 · NX 1 · XB 1</strong>
+        </div>
+        <div>
+          <span>Vidas</span>
+          <strong data-game-lives>3</strong>
+        </div>
+        <div>
+          <span>Nivel</span>
+          <strong data-game-level>1</strong>
+        </div>
+      </div>
+
+      <div class="nox-eat__arena" aria-describedby="nox-eat-status">
+        <div class="nox-eat__stage">
+          <div class="nox-eat__grid" data-nox-eat-grid></div>
+          <img
+            class="nox-eat__player"
+            data-nox-eat-player
+            src="/brand/mascot/nox-eat-head-v1.png"
+            alt=""
+            width="600"
+            height="428"
+          />
+          <img
+            class="nox-eat__enemy"
+            data-nox-eat-enemy="1"
+            src="/brand/mascot/nox-enemy-1.png"
+            alt=""
+            width="240"
+            height="171"
+          />
+          <img
+            class="nox-eat__enemy"
+            data-nox-eat-enemy="2"
+            src="/brand/mascot/nox-enemy-2.png"
+            alt=""
+            width="240"
+            height="171"
+          />
+          <img
+            class="nox-eat__enemy"
+            data-nox-eat-enemy="3"
+            src="/brand/mascot/nox-enemy-3.png"
+            alt=""
+            width="240"
+            height="171"
+          />
+        </div>
+        <div class="nox-eat__overlay" data-nox-eat-overlay>
+          <div class="nox-eat__overlay-card">
+            <p class="nox-eat__overlay-eyebrow">Consola Nox</p>
+            <h3
+              class="nox-eat__overlay-title"
+              data-nox-eat-overlay-title
+            >
+              ¿Listo para devorar?
+            </h3>
+            <p class="nox-eat__overlay-text" data-nox-eat-overlay-text>
+              Comé los puntos y atrapá las gift cards de PS, Nintendo y
+              Xbox.
+            </p>
+            <button class="nox-eat__start" type="button" data-game-start>
+              Iniciar partida
+            </button>
+          </div>
+        </div>
+        <p
+          class="nox-eat__status"
+          id="nox-eat-status"
+          aria-live="polite"
+          data-game-result
+        ></p>
+      </div>
+
+      <div class="nox-eat__controls">
+        <p data-game-status>Movete con las flechas o WASD.</p>
+      </div>
+    </section>
+
+    <section class="game-note" aria-label="Nota de privacidad">
+      <p>
+        Nox Eat es solo para divertirte. No solicitamos ni almacenamos datos
+        personales.
+      </p>
+    </section>
+  </main>
+  <SiteFooter />
+  <script src="/nox-eat.js" type="module" is:inline></script>
+  <script src="/nox-eat-audio.js" type="module" is:inline></script>
+</BaseLayout>
