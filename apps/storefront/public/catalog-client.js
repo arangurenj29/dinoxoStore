@@ -26,6 +26,51 @@ function createIcon() {
   return icon;
 }
 
+function createControls(grid) {
+  const controls = document.createElement('div');
+  controls.className = 'catalog-carousel__controls';
+  controls.setAttribute('role', 'group');
+  controls.setAttribute('aria-label', 'Navegar productos');
+
+  const previous = document.createElement('button');
+  previous.type = 'button';
+  previous.className = 'catalog-carousel__button';
+  previous.setAttribute('aria-label', 'Producto anterior');
+  previous.textContent = '‹';
+
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'catalog-carousel__button';
+  next.setAttribute('aria-label', 'Siguiente producto');
+  next.textContent = '›';
+
+  const updateDisabled = () => {
+    const maxScroll = grid.scrollWidth - grid.clientWidth;
+    previous.disabled = grid.scrollLeft <= 0;
+    next.disabled = grid.scrollLeft >= maxScroll - 1;
+  };
+
+  const scrollByCard = () => {
+    const card = grid.querySelector('.catalog-card');
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    return card ? card.offsetWidth + gap : grid.clientWidth;
+  };
+
+  previous.addEventListener('click', () => {
+    grid.scrollBy({ left: -scrollByCard(), behavior: 'smooth' });
+  });
+
+  next.addEventListener('click', () => {
+    grid.scrollBy({ left: scrollByCard(), behavior: 'smooth' });
+  });
+
+  grid.addEventListener('scroll', updateDisabled, { passive: true });
+  controls.append(previous, next);
+  grid.parentElement?.append(controls);
+  updateDisabled();
+  return controls;
+}
+
 function createCard(product, index) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const variant = variants[0];
@@ -230,6 +275,11 @@ async function loadCatalog() {
     }
     grid.dataset.catalogState = 'ready';
     grid.replaceChildren(fragment);
+    if (products.length === 1) {
+      grid.classList.add('catalog-grid--single');
+    } else if (products.length > 3) {
+      createControls(grid);
+    }
   } catch {
     showCatalogState(
       grid,
