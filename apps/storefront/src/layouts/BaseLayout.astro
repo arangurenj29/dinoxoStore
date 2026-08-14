@@ -38,6 +38,7 @@ const canonicalUrl = canonicalUrlOverride ?? metadata.canonicalUrl;
     />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
     <slot />

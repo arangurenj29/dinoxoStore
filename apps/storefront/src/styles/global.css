@@ -2027,6 +2027,384 @@ a {
   transform: translateY(-0.1rem);
 }
 
+.nox-invader {
+  width: min(100% - var(--dx-space-8), 72rem);
+  margin-inline: auto;
+}
+
+.nox-invader__heading {
+  display: grid;
+  margin-top: var(--dx-space-8);
+  gap: var(--dx-space-6);
+  align-items: end;
+  grid-template-columns: 1fr minmax(0, 30rem);
+}
+
+.nox-invader__heading h2 {
+  margin: 0;
+  color: var(--dx-color-silver-100);
+  font-family: var(--dx-font-display);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+}
+
+.nox-invader__rules {
+  max-width: 29rem;
+  margin: 0;
+  color: var(--dx-color-slate-300);
+  line-height: 1.55;
+}
+
+.nox-invader__dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: var(--dx-space-8);
+  border: 1px solid rgb(148 209 255 / 14%);
+  border-radius: var(--dx-radius-md);
+  background: rgb(3 10 18 / 58%);
+}
+
+.nox-invader__dashboard > div {
+  display: grid;
+  min-height: 5.5rem;
+  padding: var(--dx-space-4) var(--dx-space-6);
+  gap: var(--dx-space-1);
+  align-content: center;
+}
+
+.nox-invader__dashboard > div + div {
+  border-left: 1px solid rgb(148 209 255 / 14%);
+}
+
+.nox-invader__dashboard span {
+  color: var(--dx-color-slate-300);
+  font-family: var(--dx-font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nox-invader__dashboard strong {
+  color: var(--dx-color-blue-200);
+  font-family: var(--dx-font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.05em;
+}
+
+.nox-invader__arena {
+  position: relative;
+  isolation: isolate;
+  margin-top: var(--dx-space-4);
+  overflow: hidden;
+  border: 1px solid rgb(148 209 255 / 18%);
+  border-radius: var(--dx-radius-lg);
+  background:
+    radial-gradient(ellipse at 22% 34%, rgb(36 162 255 / 16%), transparent 34%),
+    linear-gradient(180deg, rgb(5 12 24 / 96%), rgb(2 6 14 / 98%));
+  box-shadow: var(--dx-shadow-raised);
+}
+
+.nox-invader__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+}
+
+.nox-invader__sky,
+.nox-invader__stars {
+  position: absolute;
+  pointer-events: none;
+}
+
+.nox-invader__sky {
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 12%,
+      rgb(148 209 255 / 7%) 12.2%,
+      transparent 12.7%
+    ),
+    linear-gradient(
+      -60deg,
+      transparent 28%,
+      rgb(148 209 255 / 5%) 28.2%,
+      transparent 28.7%
+    );
+}
+
+.nox-invader__stars {
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      rgb(148 209 255 / 80%) 0 1.5px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 38% 8%,
+      rgb(148 209 255 / 50%) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 62% 26%,
+      rgb(148 209 255 / 70%) 0 1.5px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 86% 12%,
+      rgb(148 209 255 / 55%) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 74% 42%,
+      rgb(148 209 255 / 60%) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 6% 46%,
+      rgb(148 209 255 / 55%) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 44% 38%,
+      rgb(148 209 255 / 45%) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 92% 68%,
+      rgb(148 209 255 / 65%) 0 1.5px,
+      transparent 2px
+    );
+  opacity: 0.8;
+}
+
+.nox-invader__player {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 0.3rem 0.8rem rgb(0 0 0 / 65%));
+}
+
+.nox-invader__player-frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 50% 62%;
+}
+
+.nox-invader__player-frame--1 {
+  opacity: 1;
+}
+
+.nox-invader__player:not(.nox-invader__player--flash)
+  .nox-invader__player-frame--1,
+.nox-invader__player:not(.nox-invader__player--flash)
+  .nox-invader__player-frame--2 {
+  animation: nox-invader-flap 280ms steps(1, end) infinite;
+}
+
+.nox-invader__player:not(.nox-invader__player--flash)
+  .nox-invader__player-frame--2 {
+  animation-delay: -140ms;
+}
+
+.nox-invader__player--flash {
+  animation: nox-invader-flash 160ms steps(2, end) infinite;
+}
+
+@keyframes nox-invader-flap {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(-4%) rotate(2deg);
+  }
+}
+
+@keyframes nox-invader-flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.nox-invader__boss {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0.5rem 1rem rgb(0 0 0 / 70%));
+}
+
+.nox-invader__boss[hidden] {
+  display: none;
+}
+
+.nox-invader__enemy {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0.3rem 0.8rem rgb(0 0 0 / 65%));
+}
+
+.nox-invader__enemy--gargola,
+.nox-invader__boss:not([hidden]) {
+  mix-blend-mode: screen;
+}
+
+.nox-invader__shot {
+  position: absolute;
+  z-index: 4;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #fff6cf 0%,
+    #ffd54a 46%,
+    #ff7a1a 100%
+  );
+  box-shadow:
+    0 0 0.5rem rgb(255 213 74 / 90%),
+    0 0 1rem rgb(255 122 26 / 70%);
+  pointer-events: none;
+}
+
+.nox-invader__fire {
+  position: absolute;
+  z-index: 4;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #fff0d0 0%,
+    #ff5a4a 48%,
+    rgb(255 40 20 / 0%) 100%
+  );
+  box-shadow:
+    0 0 0.6rem rgb(255 90 74 / 90%),
+    0 0 1.2rem rgb(255 58 20 / 65%);
+  pointer-events: none;
+}
+
+.nox-invader__overlay {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  padding: var(--dx-space-6);
+  place-items: center;
+  background: rgb(2 7 14 / 84%);
+  backdrop-filter: blur(6px);
+  text-align: center;
+}
+
+.nox-invader__overlay[hidden] {
+  display: none;
+}
+
+.nox-invader__overlay-card {
+  display: grid;
+  max-width: 26rem;
+  gap: var(--dx-space-3);
+  justify-items: center;
+}
+
+.nox-invader__overlay-eyebrow {
+  margin: 0;
+  color: var(--dx-color-blue-300);
+  font-family: var(--dx-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nox-invader__overlay-title {
+  margin: 0;
+  color: var(--dx-color-silver-100);
+  font-family: var(--dx-font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.nox-invader__overlay-text {
+  margin: 0;
+  color: var(--dx-color-slate-300);
+  line-height: 1.6;
+}
+
+.nox-invader__start {
+  display: inline-flex;
+  min-height: 3.25rem;
+  margin-top: var(--dx-space-4);
+  padding: 0 var(--dx-space-6);
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--dx-radius-pill);
+  background: var(--dx-color-blue-400);
+  box-shadow: 0 0 2rem rgb(36 162 255 / 28%);
+  color: var(--dx-color-midnight-950);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background-color var(--dx-motion-fast) var(--dx-ease-standard),
+    transform var(--dx-motion-fast) var(--dx-ease-standard),
+    box-shadow var(--dx-motion-fast) var(--dx-ease-standard);
+}
+
+.nox-invader__start:hover:not(:disabled) {
+  background: var(--dx-color-blue-300);
+  box-shadow: 0 0 2.4rem rgb(36 162 255 / 44%);
+  transform: translateY(-0.1rem);
+}
+
+.nox-invader__status {
+  position: absolute;
+  right: var(--dx-space-4);
+  bottom: var(--dx-space-3);
+  left: var(--dx-space-4);
+  z-index: 6;
+  margin: 0;
+  color: var(--dx-color-blue-200);
+  font-family: var(--dx-font-mono);
+  font-size: 0.8rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.nox-invader__controls {
+  display: flex;
+  margin-top: var(--dx-space-6);
+  align-items: center;
+  gap: var(--dx-space-6);
+}
+
+.nox-invader__controls p {
+  margin: 0;
+  color: var(--dx-color-blue-200);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
 .nox-zone {
   width: min(100% - var(--dx-space-8), 72rem);
   margin-inline: auto;
@@ -2440,46 +2818,59 @@ a {
   transform: rotate(3deg);
 }
 
-.game-card__visual--nox {
+.game-card__visual--invader {
   background:
-    radial-gradient(circle at 50% 44%, rgb(36 162 255 / 20%), transparent 9rem),
-    linear-gradient(150deg, rgb(23 139 255 / 14%), transparent 62%);
+    radial-gradient(
+      circle at 30% 42%,
+      rgb(36 162 255 / 26%),
+      transparent 12rem
+    ),
+    radial-gradient(
+      circle at 78% 24%,
+      rgb(255 122 26 / 16%),
+      transparent 10rem
+    ),
+    linear-gradient(135deg, rgb(23 139 255 / 16%), transparent 58%);
 }
 
-.game-card__nox-door {
+.game-card__invader-star {
   position: absolute;
-  top: 42%;
-  left: 50%;
-  width: 4.4rem;
-  height: 6.2rem;
-  border: 1px solid rgb(148 209 255 / 45%);
-  border-radius: 0.6rem 0.6rem 0 0;
-  background: linear-gradient(180deg, rgb(16 32 54 / 90%), rgb(3 10 18 / 90%));
-  transform: translateX(-50%);
-}
-
-.game-card__nox-door::after {
-  position: absolute;
-  top: 47%;
-  right: 0.7rem;
-  width: 0.45rem;
-  height: 0.45rem;
   border-radius: 50%;
-  background: var(--dx-color-blue-400);
-  box-shadow: 0 0 0.9rem rgb(36 162 255 / 90%);
-  content: '';
+  background: var(--dx-color-silver-100);
+  box-shadow: 0 0 0.7rem rgb(148 209 255 / 80%);
 }
 
-.game-card__nox-glow {
+.game-card__invader-star--1 {
+  top: 18%;
+  left: 16%;
+  width: 0.4rem;
+  height: 0.4rem;
+}
+
+.game-card__invader-star--2 {
+  top: 30%;
+  right: 22%;
+  width: 0.28rem;
+  height: 0.28rem;
+  opacity: 0.7;
+}
+
+.game-card__invader-star--3 {
+  right: 40%;
+  bottom: 22%;
+  width: 0.34rem;
+  height: 0.34rem;
+  opacity: 0.8;
+}
+
+.game-card__invader-ship {
   position: absolute;
-  bottom: 16%;
-  left: 50%;
-  width: 7rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: rgb(36 162 255 / 40%);
-  filter: blur(0.6rem);
-  transform: translateX(-50%);
+  right: -4%;
+  bottom: -8%;
+  width: 52%;
+  filter: drop-shadow(0 1.1rem 1.5rem rgb(0 0 0 / 55%));
+  transform: rotate(8deg);
+  will-change: transform;
 }
 
 .game-card__content {

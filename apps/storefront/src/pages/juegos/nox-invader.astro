@@ -1,0 +1,171 @@
+---
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Nox Invader | Dinoxo Store"
+  description="Nox Invader: Nox defiende el espacio de la invasión de gargolas y dragones. Sin registro."
+  canonicalUrl="https://dinoxostore.com/juegos/nox-invader/"
+>
+  <link
+    rel="preload"
+    slot="head"
+    href="/brand/invader/gargola.png"
+    as="image"
+  />
+  <link
+    rel="preload"
+    slot="head"
+    href="/brand/invader/dragon-bone.png"
+    as="image"
+  />
+  <link
+    rel="preload"
+    slot="head"
+    href="/brand/invader/gargola-boss.png"
+    as="image"
+  />
+  <link
+    rel="preload"
+    slot="head"
+    href="/brand/invader/dragon-bone-boss.png"
+    as="image"
+  />
+
+  <SiteHeader homeHref="/" linkPrefix="/" />
+  <main class="game-page">
+    <section class="game-intro" aria-labelledby="nox-invader-title">
+      <div class="game-intro__grid" aria-hidden="true"></div>
+      <div class="game-intro__content">
+        <p class="game-intro__eyebrow">Modo arcade · sin registro</p>
+        <h1 id="nox-invader-title">Nox Invader</h1>
+        <p>
+          Las gargolas y los dragones invadieron el espacio. Pilotá la nave de
+          Nox, derribá oleadas y frená a los jefes antes de que lleguen a tu
+          territorio.
+        </p>
+        <div class="game-intro__actions">
+          <a class="game-intro__jump" href="#jugar">Entrar a la partida</a>
+          <a class="game-intro__back" href="/juegos/">Ver todos los juegos</a>
+        </div>
+      </div>
+      <div class="game-intro__orb game-intro__orb--one" aria-hidden="true">
+      </div>
+      <div class="game-intro__orb game-intro__orb--two" aria-hidden="true">
+      </div>
+    </section>
+
+    <section
+      class="nox-invader"
+      id="jugar"
+      data-nox-invader
+      aria-labelledby="nox-invader-console-title"
+    >
+      <div class="nox-invader__heading">
+        <div>
+          <p class="game-intro__eyebrow">Consola Nox</p>
+          <h2 id="nox-invader-console-title">Detené la invasión.</h2>
+        </div>
+        <p class="nox-invader__rules">
+          Movete con las flechas o WASD y dispará solo. Las gargolas (niveles
+          1-2) y los dragones (3-4) esconden jefes al final de cada par de
+          oleadas.
+        </p>
+      </div>
+
+      <div class="nox-invader__dashboard" aria-label="Estado de la partida">
+        <div>
+          <span>Puntos</span>
+          <strong data-game-score>0000</strong>
+        </div>
+        <div>
+          <span>Vidas</span>
+          <strong data-game-lives>3</strong>
+        </div>
+        <div>
+          <span>Nivel</span>
+          <strong data-game-level>1</strong>
+        </div>
+      </div>
+
+      <div
+        class="nox-invader__arena"
+        data-nox-invader-arena
+        aria-describedby="nox-invader-status"
+      >
+        <div class="nox-invader__stage" data-nox-invader-stage>
+          <div class="nox-invader__sky" aria-hidden="true"></div>
+          <div class="nox-invader__stars" aria-hidden="true"></div>
+          <div class="nox-invader__player" data-nox-invader-player>
+            <img
+              class="nox-invader__player-frame nox-invader__player-frame--1"
+              src="/brand/mascot/nox-run-cycle-1-v1.png"
+              alt=""
+              width="1254"
+              height="1254"
+            />
+            <img
+              class="nox-invader__player-frame nox-invader__player-frame--2"
+              src="/brand/mascot/nox-run-cycle-opposite-v4.png"
+              alt=""
+              width="1254"
+              height="1254"
+            />
+          </div>
+          <img
+            class="nox-invader__boss"
+            data-nox-invader-boss
+            src="/brand/invader/gargola-boss.png"
+            alt=""
+            width="294"
+            height="422"
+            hidden
+          />
+        </div>
+        <div class="nox-invader__overlay" data-nox-invader-overlay>
+          <div class="nox-invader__overlay-card">
+            <p class="nox-invader__overlay-eyebrow">Consola Nox</p>
+            <h3
+              class="nox-invader__overlay-title"
+              data-nox-invader-overlay-title
+            >
+              ¿Listo para defender el espacio?
+            </h3>
+            <p class="nox-invader__overlay-text" data-nox-invader-overlay-text>
+              Esquivá el fuego enemigo y derribá a los invasores.
+            </p>
+            <button class="nox-invader__start" type="button" data-game-start>
+              Iniciar partida
+            </button>
+          </div>
+        </div>
+        <p
+          class="nox-invader__status"
+          id="nox-invader-status"
+          aria-live="polite"
+          data-game-result
+        >
+        </p>
+      </div>
+
+      <div class="nox-invader__controls">
+        <p data-game-status>
+          Movete con las flechas o WASD. Dispará manteniendo la partida en
+          marcha.
+        </p>
+      </div>
+    </section>
+
+    <section class="game-note" aria-label="Nota de privacidad">
+      <p>
+        Nox Invader es solo para divertirte. No solicitamos ni almacenamos datos
+        personales.
+      </p>
+    </section>
+  </main>
+  <SiteFooter />
+  <script src="/nox-invader.js" type="module" is:inline></script>
+  <script src="/nox-invader-audio.js" type="module" is:inline></script>
+</BaseLayout>

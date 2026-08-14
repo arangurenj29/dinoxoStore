@@ -148,6 +148,9 @@ test('el Arcade Dinoxo permite elegir juegos públicos sin capturar datos', asyn
   );
   assert.match(html, /href="\/juegos\/dino-rush\/"/);
   assert.match(html, /href="\/juegos\/nox-runner\/"/);
+  assert.match(html, /href="\/juegos\/nox-invader\/"/);
+  assert.match(html, /game-card--invader/);
+  assert.match(html, /Jugar Nox Invader/);
   assert.match(html, /src="\/brand\/mascot\/nox-runner-v1\.png"/);
   assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-1-v1\.png"/);
   assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-opposite-v4\.png"/);
@@ -208,6 +211,31 @@ test('Nox Eat es público, jugable y no solicita información personal', async (
   assert.match(html, /data-nox-eat-player/);
   assert.match(html, /data-game-start/);
   assert.match(html, /src="\/nox-eat\.js" type="module"/);
+  assert.match(html, /No solicitamos ni almacenamos datos personales\./);
+  assert.doesNotMatch(html, /<form[\s>]/i);
+  assert.doesNotMatch(html, /<input[\s>]/i);
+  assert.doesNotMatch(html, /\/api\/(?:games|leads)/i);
+});
+
+test('Nox Invader es público, jugable y no solicita información personal', async () => {
+  const html = await readArtifact('juegos/nox-invader/index.html');
+
+  assert.match(html, /<title>Nox Invader \| Dinoxo Store<\/title>/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/dinoxostore\.com\/juegos\/nox-invader\/">/,
+  );
+  assert.match(html, /data-nox-invader/);
+  assert.match(html, /data-nox-invader-arena/);
+  assert.match(html, /data-nox-invader-player/);
+  assert.match(html, /data-game-start/);
+  assert.match(html, /src="\/nox-invader\.js" type="module"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-1-v1\.png"/);
+  assert.match(html, /src="\/brand\/mascot\/nox-run-cycle-opposite-v4\.png"/);
+  assert.match(html, /href="\/brand\/invader\/gargola\.png"/);
+  assert.match(html, /href="\/brand\/invader\/dragon-bone\.png"/);
+  assert.match(html, /href="\/brand\/invader\/gargola-boss\.png"/);
+  assert.match(html, /href="\/brand\/invader\/dragon-bone-boss\.png"/);
   assert.match(html, /No solicitamos ni almacenamos datos personales\./);
   assert.doesNotMatch(html, /<form[\s>]/i);
   assert.doesNotMatch(html, /<input[\s>]/i);
