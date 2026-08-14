@@ -8,14 +8,9 @@ import Logo from './core/Logo.astro';
 interface Props {
   homeHref?: string;
   linkPrefix?: string;
-  showGameLink?: boolean;
 }
 
-const {
-  homeHref = '#inicio',
-  linkPrefix = '',
-  showGameLink = true,
-} = Astro.props;
+const { homeHref = '#inicio', linkPrefix = '' } = Astro.props;
 ---
 
 <header class="site-header" data-site-header>
@@ -24,13 +19,32 @@ const {
       <Logo className="site-wordmark__logo" />
       <span>dinoxo.store</span>
     </a>
-    <div class="site-nav__links">
-      <a href={`${linkPrefix}#como-funciona`}>Cómo funciona</a>
-      <a href={`${linkPrefix}#productos`}>Productos</a>
-      {showGameLink && <a href="/juegos/">Juega</a>}
-    </div>
     <div class="site-nav__actions">
       <div class="site-social-links" role="group" aria-label="Redes oficiales">
+        <a
+          class="social-link"
+          href="/juegos/"
+          aria-label="Juega"
+          title="Juega"
+        >
+          <Icon name="control" alt="" />
+        </a>
+        <a
+          class="social-link"
+          href={`${linkPrefix}#productos`}
+          aria-label="Productos"
+          title="Productos"
+        >
+          <Icon name="book" alt="" />
+        </a>
+        <a
+          class="social-link"
+          href={`${linkPrefix}#como-funciona`}
+          aria-label="Cómo funciona"
+          title="Cómo funciona"
+        >
+          <Icon name="help" alt="" />
+        </a>
         {
           socialLinks.map((socialLink) => (
             <a

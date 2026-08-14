@@ -11,6 +11,10 @@ dist/
 coverage/
 apps/storefront/public/_headers
 
+# Supabase CLI local state
+supabase/.branches/
+supabase/.temp/
+
 # Environment and secrets
 .env
 .env.*
