@@ -108,8 +108,13 @@ const productId = element<HTMLInputElement>('product-id');
 const productName = element<HTMLInputElement>('product-name');
 const productSlug = element<HTMLInputElement>('product-slug');
 const productDescription = element<HTMLTextAreaElement>('product-description');
+const productPrice = element<HTMLInputElement>('product-price');
+const productPlatform = element<HTMLSelectElement>('product-platform');
+const productRegion = element<HTMLInputElement>('product-region');
+const productDelivery = element<HTMLInputElement>('product-delivery');
 const publishButton = element<HTMLButtonElement>('publish-product');
 const archiveButton = element<HTMLButtonElement>('archive-product');
+const deleteButton = element<HTMLButtonElement>('delete-product');
 const variantSection = element<HTMLElement>('variant-section');
 const variantList = element<HTMLElement>('variant-list');
 const variantEmpty = element<HTMLElement>('variant-empty');
@@ -436,6 +441,11 @@ function showNewProduct() {
   productState.dataset.state = 'draft';
   publishButton.hidden = true;
   archiveButton.hidden = true;
+  deleteButton.hidden = true;
+  productPrice.value = '';
+  productPlatform.value = '';
+  productRegion.value = 'Consultar';
+  productDelivery.value = 'Atención por WhatsApp';
   slugWasEdited = false;
   productFieldsAreDirty = false;
   dirtyVariantClientIds.clear();
@@ -451,17 +461,25 @@ function renderSelectedProduct() {
 
   editorPlaceholder.hidden = true;
   productForm.hidden = false;
-  variantSection.hidden = false;
+  variantSection.hidden = true;
   mediaSection.hidden = false;
   productId.value = product.id;
   productName.value = product.name;
   productSlug.value = product.slug;
   productDescription.value = product.description;
+  const firstVariant = product.product_variants?.[0];
+  productPrice.value = firstVariant
+    ? (firstVariant.price_minor / 100).toString()
+    : '';
+  productPlatform.value = firstVariant?.platform ?? '';
+  productRegion.value = firstVariant?.region ?? 'Consultar';
+  productDelivery.value = 'Atención por WhatsApp';
   productFormTitle.textContent = product.name;
   productState.textContent = statusLabels[product.status];
   productState.dataset.state = product.status;
   publishButton.hidden = product.status === 'published';
   archiveButton.hidden = product.status === 'archived';
+  deleteButton.hidden = false;
   slugWasEdited = true;
   renderVariants(product);
   void renderMedia(product);
@@ -518,6 +536,48 @@ async function saveProduct() {
   removeAdminWorkspaceDraft(localStorage, previousDraftProductId);
   selectedProductId = data.id;
   productId.value = data.id;
+
+  const priceValue = productPrice.value.trim();
+  const priceMinor = priceValue ? Math.round(parseFloat(priceValue) * 100) : 0;
+  const platform = productPlatform.value.trim() || 'Consultar';
+  const region = productRegion.value.trim() || 'Consultar';
+  const slug = data.slug;
+  const sku = `SKU-${slug}`
+    .toUpperCase()
+    .replace(/[^A-Z0-9-]/g, '')
+    .slice(0, 64);
+
+  const existingVariant = data.product_variants?.[0];
+  if (existingVariant) {
+    const { error: vErr } = await supabase
+      .from('product_variants')
+      .update({
+        sku,
+        name: data.name,
+        platform,
+        region,
+        denomination: data.name,
+        price_minor: priceMinor,
+        currency: 'USD',
+        status: data.status,
+      })
+      .eq('id', existingVariant.id);
+    if (vErr) throw vErr;
+  } else {
+    const { error: vErr } = await supabase.from('product_variants').insert({
+      product_id: data.id,
+      sku,
+      name: data.name,
+      platform,
+      region,
+      denomination: data.name,
+      price_minor: priceMinor,
+      currency: 'USD',
+      status: data.status,
+    });
+    if (vErr) throw vErr;
+  }
+
   syncDraftStorage();
   await loadProducts(data.id);
   setStatus(existing ? 'Producto actualizado.' : 'Producto creado.', 'success');
@@ -544,6 +604,22 @@ async function changeProductStatus(
     status === 'published' ? 'Producto publicado.' : 'Producto archivado.',
     'success',
   );
+}
+
+async function deleteProduct() {
+  const product = currentProduct();
+  if (!product) return;
+
+  const { error } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', product.id);
+  if (error) throw error;
+
+  selectedProductId = undefined;
+  await loadProducts();
+  showEditorPlaceholder();
+  setStatus('Producto eliminado.', 'success');
 }
 
 function labeledInput(
@@ -1059,15 +1135,6 @@ element<HTMLButtonElement>('new-product').addEventListener(
   'click',
   selectNewProduct,
 );
-element<HTMLButtonElement>('add-variant').addEventListener('click', () => {
-  const editor = variantEditor();
-  variantList.prepend(editor);
-  const clientId = editor.dataset.clientId;
-  if (clientId) dirtyVariantClientIds.add(clientId);
-  variantEmpty.hidden = true;
-  persistWorkspaceDraft();
-});
-
 productName.addEventListener('input', () => {
   if (!slugWasEdited) productSlug.value = slugify(productName.value);
 });
@@ -1090,6 +1157,10 @@ publishButton.addEventListener('click', () => {
 archiveButton.addEventListener('click', () => {
   if (!confirmAction(archiveButton)) return;
   void runAction(archiveButton, () => changeProductStatus('archived'));
+});
+deleteButton.addEventListener('click', () => {
+  if (!confirmAction(deleteButton)) return;
+  void runAction(deleteButton, deleteProduct);
 });
 mediaUpload.addEventListener('change', () => {
   const files = [...(mediaUpload.files ?? [])];

@@ -9,6 +9,12 @@ import {
   selectTargetType,
 } from './dino-rush-engine.js';
 
+const GIFT_CARDS = [
+  '/brand/giftcards/playstation.png',
+  '/brand/giftcards/nintendo.png',
+  '/brand/giftcards/xbox.png',
+];
+
 const game = document.querySelector('[data-dino-rush]');
 
 if (game) {
@@ -19,6 +25,7 @@ if (game) {
   const startButton = game.querySelector('[data-game-start]');
   const status = game.querySelector('[data-game-status]');
   const time = game.querySelector('[data-game-time]');
+  const noxHead = game.querySelector('.dino-rush__nox-head');
 
   let activeTarget = null;
   let animationFrame = 0;
@@ -70,7 +77,7 @@ if (game) {
     target.type = 'button';
     target.dataset.target = type;
     target.setAttribute('aria-label', `Capturar ${targetData.label}`);
-    target.innerHTML = '<span aria-hidden="true"></span>';
+    target.innerHTML = `<img src="${GIFT_CARDS[Math.floor(Math.random() * GIFT_CARDS.length)]}" alt="" width="120" height="90" />`;
     target.addEventListener('pointerdown', (event) => {
       event.stopPropagation();
       if (!running || activeTarget !== target) return;
@@ -135,7 +142,19 @@ if (game) {
     spawnTarget();
   }
 
-  arena.addEventListener('pointerdown', () => {
+  arena.addEventListener('pointerdown', (event) => {
+    if (noxHead && arena) {
+      const rect = arena.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = event.clientX - cx;
+      const dy = event.clientY - cy;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      noxHead.style.transform = `rotate(${angle * 0.3}deg)`;
+      setTimeout(() => {
+        if (noxHead) noxHead.style.transform = '';
+      }, 300);
+    }
     if (!running) return;
     if (activeTarget) {
       clearActiveTarget();

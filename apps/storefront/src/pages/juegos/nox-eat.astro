@@ -129,6 +129,40 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <div class="nox-eat__controls">
         <p data-game-status>Movete con las flechas o WASD.</p>
       </div>
+      <div class="nox-eat__dpad" aria-label="Controles táctiles">
+        <button
+          type="button"
+          class="nox-eat__dpad-btn nox-eat__dpad-btn--up"
+          data-dpad="up"
+          aria-label="Arriba"
+        >
+          &#9650;
+        </button>
+        <button
+          type="button"
+          class="nox-eat__dpad-btn nox-eat__dpad-btn--left"
+          data-dpad="left"
+          aria-label="Izquierda"
+        >
+          &#9664;
+        </button>
+        <button
+          type="button"
+          class="nox-eat__dpad-btn nox-eat__dpad-btn--down"
+          data-dpad="down"
+          aria-label="Abajo"
+        >
+          &#9660;
+        </button>
+        <button
+          type="button"
+          class="nox-eat__dpad-btn nox-eat__dpad-btn--right"
+          data-dpad="right"
+          aria-label="Derecha"
+        >
+          &#9654;
+        </button>
+      </div>
     </section>
 
     <section class="game-note" aria-label="Nota de privacidad">

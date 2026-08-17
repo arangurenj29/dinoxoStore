@@ -50,10 +50,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <div class="game-selector__grid">
         <article class="game-card game-card--rush game-card--featured">
           <div
-            class="game-card__visual game-card__visual--rush"
+            class="game-card__visual game-card__visual--rush-nucleo"
             aria-hidden="true"
           >
-            <span></span><span></span><span></span><span></span>
+            <img
+              class="game-card__nucleo-head"
+              src="/brand/mascot/nox-eat-head-v1.png"
+              alt=""
+              width="600"
+              height="428"
+            />
+            <img
+              class="game-card__nucleo-card game-card__nucleo-card--ps"
+              src="/brand/giftcards/playstation.png"
+              alt=""
+              width="213"
+              height="156"
+            />
+            <img
+              class="game-card__nucleo-card game-card__nucleo-card--nx"
+              src="/brand/giftcards/nintendo.png"
+              alt=""
+              width="289"
+              height="334"
+            />
+            <img
+              class="game-card__nucleo-card game-card__nucleo-card--xb"
+              src="/brand/giftcards/xbox.png"
+              alt=""
+              width="205"
+              height="282"
+            />
           </div>
           <div class="game-card__content">
             <p class="game-card__number">01 · Precisión</p>
@@ -150,18 +177,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             class="game-card__visual game-card__visual--invader"
             aria-hidden="true"
           >
-            <span class="game-card__invader-star game-card__invader-star--1"
-            ></span>
-            <span class="game-card__invader-star game-card__invader-star--2"
-            ></span>
-            <span class="game-card__invader-star game-card__invader-star--3"
-            ></span>
             <img
-              class="game-card__invader-ship"
-              src="/brand/mascot/nox-run-cycle-1-v1.png"
+              class="game-card__invader-nox"
+              src="/brand/mascot/nox-eat-head-v1.png"
               alt=""
-              width="1254"
-              height="1254"
+              width="600"
+              height="428"
+            />
+            <img
+              class="game-card__invader-enemy game-card__invader-enemy--1"
+              src="/brand/invader/gargola.png"
+              alt=""
+              width="290"
+              height="264"
+            />
+            <img
+              class="game-card__invader-enemy game-card__invader-enemy--2"
+              src="/brand/invader/dragon-bone.png"
+              alt=""
+              width="290"
+              height="264"
             />
           </div>
           <div class="game-card__content">

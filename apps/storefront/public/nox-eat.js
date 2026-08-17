@@ -80,6 +80,7 @@ if (game) {
   let running = false;
   let timer = 0;
   let pendingDir = null;
+  let heldDir = null;
   let statusMessage = '';
   let preserveLivesOnNext = false;
   let enemyMoveAccum = 0;
@@ -287,6 +288,7 @@ if (game) {
       }
       state = resolveCollisions(state);
 
+      if (!pendingDir && heldDir && !state.defeated) pendingDir = heldDir;
       if (pendingDir && !state.defeated) {
         const [dx, dy] = pendingDir;
         pendingDir = null;
@@ -356,6 +358,7 @@ if (game) {
     state.lives = previousLives;
     running = true;
     pendingDir = null;
+    heldDir = null;
     statusMessage = '';
     resultEl.textContent = '';
     overlayTitle.textContent = '¿Listo para devorar?';
@@ -387,6 +390,51 @@ if (game) {
     event.preventDefault();
     pendingDir = DIRS[event.code];
   });
+
+  const DIR_MAP = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+  const dpad = game.querySelector('.nox-eat__dpad');
+  if (dpad) {
+    dpad.addEventListener('pointerdown', (e) => {
+      const btn = e.target.closest('[data-dpad]');
+      if (!btn) return;
+      e.preventDefault();
+      heldDir = DIR_MAP[btn.dataset.dpad];
+      if (heldDir) pendingDir = heldDir;
+    });
+    dpad.addEventListener('pointerup', () => {
+      heldDir = null;
+    });
+    dpad.addEventListener('pointerleave', () => {
+      heldDir = null;
+    });
+  }
+
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+  arenaEl.addEventListener(
+    'touchstart',
+    (e) => {
+      swipeStartX = e.touches[0].clientX;
+      swipeStartY = e.touches[0].clientY;
+    },
+    { passive: true },
+  );
+  arenaEl.addEventListener(
+    'touchend',
+    (e) => {
+      const dx = e.changedTouches[0].clientX - swipeStartX;
+      const dy = e.changedTouches[0].clientY - swipeStartY;
+      if (Math.abs(dx) < 15 && Math.abs(dy) < 15) return;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        pendingDir = dx > 0 ? [1, 0] : [-1, 0];
+      } else {
+        pendingDir = dy > 0 ? [0, 1] : [0, -1];
+      }
+      heldDir = pendingDir;
+    },
+    { passive: true },
+  );
+
   window.addEventListener('resize', () => {
     if (state) fitBoard();
   });

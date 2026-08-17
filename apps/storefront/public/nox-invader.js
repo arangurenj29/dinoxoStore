@@ -38,7 +38,7 @@ if (game) {
   let downPressed = false;
 
   function unit() {
-    return Math.max(5, Math.min(11, Math.floor(arenaEl.clientWidth / 120)));
+    return Math.max(3, Math.min(11, Math.floor(arenaEl.clientWidth / 120)));
   }
 
   function scaleBox(entity, ratio, extra = 1) {
@@ -238,6 +238,61 @@ if (game) {
       downPressed = false;
     }
   });
+
+  const dpad = game.querySelector('.nox-invader__dpad');
+  if (dpad) {
+    const stateMap = { up: 'up', down: 'down' };
+    dpad.addEventListener('pointerdown', (e) => {
+      const btn = e.target.closest('[data-dpad]');
+      if (!btn) return;
+      e.preventDefault();
+      const dir = stateMap[btn.dataset.dpad];
+      if (dir === 'up') upPressed = true;
+      if (dir === 'down') downPressed = true;
+    });
+    dpad.addEventListener('pointerup', (e) => {
+      const btn = e.target.closest('[data-dpad]');
+      if (!btn) return;
+      const dir = stateMap[btn.dataset.dpad];
+      if (dir === 'up') upPressed = false;
+      if (dir === 'down') downPressed = false;
+    });
+    dpad.addEventListener('pointerleave', () => {
+      upPressed = false;
+      downPressed = false;
+    });
+  }
+
+  arenaEl.addEventListener(
+    'touchstart',
+    (e) => {
+      e.preventDefault();
+      const rect = arenaEl.getBoundingClientRect();
+      const y = e.touches[0].clientY - rect.top;
+      if (y < rect.height / 2) {
+        upPressed = true;
+      } else {
+        downPressed = true;
+      }
+    },
+    { passive: false },
+  );
+  arenaEl.addEventListener(
+    'touchend',
+    () => {
+      upPressed = false;
+      downPressed = false;
+    },
+    { passive: true },
+  );
+  arenaEl.addEventListener(
+    'touchcancel',
+    () => {
+      upPressed = false;
+      downPressed = false;
+    },
+    { passive: true },
+  );
 
   startButton.addEventListener('click', () => {
     if (state.status === 'complete' && state.level < MAX_LEVEL) {

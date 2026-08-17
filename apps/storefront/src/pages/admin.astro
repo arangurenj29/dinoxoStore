@@ -151,12 +151,66 @@ import '../styles/admin.css';
                 <textarea id="product-description" name="description" rows="4"
                 ></textarea>
               </label>
+              <label>
+                <span>Precio (USD)</span>
+                <input
+                  id="product-price"
+                  name="price"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="0.01"
+                  placeholder="Consultar"
+                />
+              </label>
+              <label>
+                <span>Plataforma</span>
+                <select id="product-platform" name="platform">
+                  <option value="">Consultar</option>
+                  <option value="Nintendo">Nintendo</option>
+                  <option value="PlayStation">PlayStation</option>
+                  <option value="Xbox">Xbox</option>
+                  <option value="Steam">Steam</option>
+                  <option value="Microsoft">Microsoft</option>
+                  <option value="Juegos">Juegos</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </label>
+              <label>
+                <span>Región</span>
+                <input
+                  id="product-region"
+                  name="region"
+                  type="text"
+                  value="Consultar"
+                  maxlength="80"
+                />
+              </label>
+              <label>
+                <span>Entrega</span>
+                <input
+                  id="product-delivery"
+                  name="delivery"
+                  type="text"
+                  value="Atención por WhatsApp"
+                  maxlength="120"
+                />
+              </label>
             </div>
 
             <div class="form-actions">
               <button class="button button--primary" type="submit"
                 >Guardar cambios</button
               >
+              <button
+                id="delete-product"
+                class="button button--danger"
+                type="button"
+                data-confirm="Eliminar este producto permanentemente"
+                hidden
+              >
+                Eliminar
+              </button>
               <button
                 id="publish-product"
                 class="button button--quiet"
@@ -176,30 +230,10 @@ import '../styles/admin.css';
             </div>
           </form>
 
-          <section
-            id="variant-section"
-            class="editor-section"
-            aria-labelledby="variant-title"
-            hidden
-          >
-            <div class="section-title">
-              <div>
-                <p class="admin-eyebrow">Opciones de venta</p>
-                <h2 id="variant-title">Variantes</h2>
-              </div>
-              <button
-                id="add-variant"
-                class="button button--quiet"
-                type="button"
-              >
-                Añadir variante
-              </button>
-            </div>
-            <div id="variant-list" class="variant-list"></div>
-            <p id="variant-empty" class="empty-state">
-              Este producto no tiene variantes.
-            </p>
-          </section>
+          <div id="variant-section" hidden>
+            <div id="variant-list"></div>
+            <p id="variant-empty"></p>
+          </div>
 
           <section
             id="media-section"
