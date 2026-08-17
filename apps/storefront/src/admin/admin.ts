@@ -547,7 +547,12 @@ async function saveProduct() {
     .replace(/[^A-Z0-9-]/g, '')
     .slice(0, 64);
 
-  const existingVariant = data.product_variants?.[0];
+  const { data: existingVariant } = await supabase
+    .from('product_variants')
+    .select('id')
+    .eq('product_id', data.id)
+    .limit(1)
+    .maybeSingle();
   if (existingVariant) {
     const { error: vErr } = await supabase
       .from('product_variants')
