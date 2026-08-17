@@ -16,5 +16,7 @@ test('local migration filenames match the applied remote history exactly', async
     '20260805012529_fix_storage_product_path_policies.sql',
     '20260813000000_public_products_storage_bucket.sql',
     '20260814000000_ensure_products_storage_bucket.sql',
+    '20260817000000_admin_delete_products.sql',
+    '20260817000001_grant_delete_products.sql',
   ]);
 });

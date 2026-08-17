@@ -7,63 +7,69 @@ on:
     branches: [main]
 
 concurrency:
-  group: quality-${{ github.ref }}
+  group: production-${{ github.repository }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   storefront:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
-      - run: corepack enable && pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm typecheck
-      - run: pnpm test:unit
-      - run: pnpm build:preview
-      - run: pnpm build:production
+      - run: corepack enable
+      - run: corepack pnpm install --frozen-lockfile
+      - run: corepack pnpm lint
+      - run: corepack pnpm typecheck
+      - run: corepack pnpm test:unit
+      - run: corepack pnpm build:preview
+      - run: corepack pnpm test:static:preview
+      - run: corepack pnpm build:production
+      - run: corepack pnpm test:static:production
+      - run: python3 brand/tools/validate_brand.py
 
   database:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=5
     steps:
-      - uses: actions/checkout@v4
-      - run: |
-          for f in supabase/migrations/*.sql; do
-            psql "$POSTGRES_URL" -f "$f" || true
-          done
-        env:
-          POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: supabase/setup-cli@46f7f98c7f948ad727d22c1e67fab04c223a0520 # v3
+        with:
+          version: 2.101.0
+      - run: supabase db start
+      - run: supabase test db --local
 
   deploy:
-    needs: [storefront]
+    needs: [storefront, database]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: read
+      deployments: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
-      - run: corepack enable && pnpm install --frozen-lockfile
-      - run: pnpm build:production
-      - uses: cloudflare/wrangler-action@v3
+      - run: corepack enable
+      - run: corepack pnpm install --frozen-lockfile
+      - run: corepack pnpm build:production
+      - uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3
         with:
-          working-directory: apps/storefront
+          workingDirectory: apps/storefront
+          wranglerVersion: 4.118.0
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: deploy
+
+  smoke:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - run: node scripts/production-smoke.mjs

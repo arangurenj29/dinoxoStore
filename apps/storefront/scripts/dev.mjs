@@ -24,6 +24,7 @@ const result = spawnSync(astroExecutable, ['dev'], {
     PUBLIC_SUPABASE_URL: config.supabaseUrl,
   },
   stdio: 'inherit',
+  shell: process.platform === 'win32',
 });
 if (result.error) throw result.error;
 process.exit(result.status ?? 1);
