@@ -1,7 +1,6 @@
 function text(value, fallback) {
   return value?.trim() || fallback;
 }
-
 function formatPrice(variant) {
   if (variant.price_minor === null)
     return text(variant.denomination, "Consultar");
@@ -14,63 +13,52 @@ function formatPrice(variant) {
     return `${variant.currency} ${(variant.price_minor / 100).toFixed(2)}`;
   }
 }
-
 function uniqueValues(values) {
   return [...new Set(values.filter(Boolean))];
 }
-
 function createIcon() {
   const icon = document.createElement("span");
   icon.className = "icon icon--whatsapp-contact";
   icon.setAttribute("aria-hidden", "true");
   return icon;
 }
-
 function createControls(grid) {
   const controls = document.createElement("div");
   controls.className = "catalog-carousel__controls";
   controls.setAttribute("role", "group");
   controls.setAttribute("aria-label", "Navegar productos");
-
   const previous = document.createElement("button");
   previous.type = "button";
   previous.className = "catalog-carousel__button";
   previous.setAttribute("aria-label", "Producto anterior");
-  previous.textContent = "‹";
-
+  previous.textContent = "???";
   const next = document.createElement("button");
   next.type = "button";
   next.className = "catalog-carousel__button";
   next.setAttribute("aria-label", "Siguiente producto");
-  next.textContent = "›";
-
+  next.textContent = "???";
   const updateDisabled = () => {
     const maxScroll = grid.scrollWidth - grid.clientWidth;
     previous.disabled = grid.scrollLeft <= 0;
     next.disabled = grid.scrollLeft >= maxScroll - 1;
   };
-
   const scrollByCard = () => {
     const card = grid.querySelector(".catalog-card");
     const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
     return card ? card.offsetWidth + gap : grid.clientWidth;
   };
-
   previous.addEventListener("click", () => {
     grid.scrollBy({ left: -scrollByCard(), behavior: "smooth" });
   });
-
   next.addEventListener("click", () => {
     grid.scrollBy({ left: scrollByCard(), behavior: "smooth" });
   });
-
   grid.addEventListener("scroll", updateDisabled, { passive: true });
   controls.append(previous, next);
   grid.parentElement?.append(controls);
   updateDisabled();
   return controls;
 }
-
 function createCard(product, index) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const variant = variants[0];
@@ -80,10 +68,8 @@ function createCard(product, index) {
   card.className = "catalog-card";
   card.dataset.reveal = "card";
   card.style.setProperty("--reveal-delay", `${Math.min(index, 5) * 80}ms`);
-
   const banner = document.createElement("div");
   banner.className = "catalog-card__banner";
-
   if (cover) {
     const frame = document.createElement("div");
     frame.className = "catalog-card__media";
@@ -96,19 +82,15 @@ function createCard(product, index) {
     frame.append(image);
     banner.append(frame);
   }
-
   const body = document.createElement("div");
   body.className = "catalog-card__body";
-
   const status = document.createElement("p");
   status.className = "catalog-card__status";
   status.textContent = "Disponible para consultar";
   body.append(status);
-
   const heading = document.createElement("h3");
   heading.textContent = product.name;
   body.append(heading);
-
   const details = document.createElement("dl");
   const platforms = uniqueValues(
     variants.map((item) => text(item.platform, "Consultar")),
@@ -118,10 +100,10 @@ function createCard(product, index) {
   );
   const prices = uniqueValues(variants.map((item) => formatPrice(item)));
   const fields = [
-    ["Precio", prices.length ? prices.join(" · ") : "Consultar"],
-    ["Plataforma", platforms.length ? platforms.join(" · ") : "Consultar"],
-    ["Región", regions.length ? regions.join(" · ") : "Consultar"],
-    ["Entrega", "Atención por WhatsApp"],
+    ["Precio", prices.length ? prices.join(" ?? ") : "Consultar"],
+    ["Plataforma", platforms.length ? platforms.join(" ?? ") : "Consultar"],
+    ["Regi??n", regions.length ? regions.join(" ?? ") : "Consultar"],
+    ["Entrega", "Atenci??n por WhatsApp"],
   ];
   for (const [label, value] of fields) {
     const row = document.createElement("div");
@@ -133,7 +115,6 @@ function createCard(product, index) {
     details.append(row);
   }
   body.append(details);
-
   const link = document.createElement("a");
   link.className = "button-link button-link--secondary";
   link.href = `https://wa.me/584268158785?text=${encodeURIComponent(`Hola, quiero consultar por ${product.name}${variant ? `, ${variant.name}` : ""}.`)}`;
@@ -142,12 +123,10 @@ function createCard(product, index) {
   label.textContent = "Consultar producto";
   link.append(label);
   body.append(link);
-
   banner.append(body);
   card.append(banner);
   return card;
 }
-
 function showCatalogState(grid, message) {
   grid.dataset.catalogState = "empty";
   const state = document.createElement("p");
@@ -156,14 +135,11 @@ function showCatalogState(grid, message) {
   state.textContent = message;
   grid.replaceChildren(state);
 }
-
 function initMotion() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
   document.documentElement.classList.add("motion-ready");
   const revealSelector = "[data-reveal]";
   const revealElements = (root) => root.querySelectorAll(revealSelector);
-
   if ("IntersectionObserver" in window) {
     const revealObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -175,7 +151,6 @@ function initMotion() {
       },
       { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
     );
-
     const observeReveal = (root) => {
       for (const element of revealElements(root)) {
         if (element.dataset.revealObserved) continue;
@@ -183,7 +158,6 @@ function initMotion() {
         revealObserver.observe(element);
       }
     };
-
     observeReveal(document);
     const mutationObserver = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -201,7 +175,6 @@ function initMotion() {
   } else {
     document.documentElement.classList.remove("motion-ready");
   }
-
   const header = document.querySelector(".site-header");
   const hero = document.querySelector(".hero");
   let framePending = false;
@@ -214,7 +187,6 @@ function initMotion() {
     }
     framePending = false;
   };
-
   window.addEventListener(
     "scroll",
     () => {
@@ -225,7 +197,6 @@ function initMotion() {
     { passive: true },
   );
   updateScrollEffects();
-
   if (window.matchMedia("(pointer: fine)").matches) {
     document.addEventListener("pointermove", (event) => {
       if (!(event.target instanceof Element)) return;
@@ -237,10 +208,8 @@ function initMotion() {
     });
   }
 }
-
 const SUPABASE_URL = "https://yvbrvclbqmvxxtfehxxp.supabase.co";
 const SUPABASE_KEY = "sb_publishable_5Osn2s-bQqLKeGm0BZ5ayA_Efh7gLjP";
-
 async function fetchCatalogDirectly() {
   const response = await fetch(
     `${SUPABASE_URL}/rest/v1/products?select=*,product_media(*),product_variants(*)&status=eq.published&archived_at=is.null`,
@@ -284,11 +253,9 @@ async function fetchCatalogDirectly() {
     })),
   };
 }
-
 async function loadCatalog() {
   const grid = document.querySelector("[data-catalog-grid]");
   if (!grid) return;
-
   try {
     let payload;
     try {
@@ -301,11 +268,9 @@ async function loadCatalog() {
     } catch {
       /* worker unavailable */
     }
-
     if (!payload) {
       payload = await fetchCatalogDirectly();
     }
-
     const products = Array.isArray(payload.products)
       ? payload.products.filter(
           (product) =>
@@ -317,7 +282,7 @@ async function loadCatalog() {
     if (products.length === 0) {
       showCatalogState(
         grid,
-        "Todavía no hay productos publicados. Escribinos por WhatsApp y te ayudamos.",
+        "Todav??a no hay productos publicados. Escribinos por WhatsApp y te ayudamos.",
       );
       return;
     }
@@ -335,10 +300,10 @@ async function loadCatalog() {
   } catch {
     showCatalogState(
       grid,
-      "No pudimos cargar el catálogo. Escribinos por WhatsApp para consultar disponibilidad.",
+      "No pudimos cargar el cat??logo. Escribinos por WhatsApp para consultar disponibilidad.",
     );
   }
 }
-
 initMotion();
 void loadCatalog();
+
