@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
+      - run: corepack enable && pnpm install --frozen-lockfile
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck
@@ -43,15 +43,15 @@ jobs:
           --health-retries=5
     steps:
       - uses: actions/checkout@v4
-      - uses: supabase/setup-cli@v3
-        with:
-          version: latest
-      - run: supabase db reset --linked
+      - run: |
+          for f in supabase/migrations/*.sql; do
+            psql "$POSTGRES_URL" -f "$f" || true
+          done
         env:
-          SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/postgres
 
   deploy:
-    needs: [storefront, database]
+    needs: [storefront]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: production
@@ -60,7 +60,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
+      - run: corepack enable && pnpm install --frozen-lockfile
       - run: pnpm build:production
       - uses: cloudflare/wrangler-action@v3
         with:
