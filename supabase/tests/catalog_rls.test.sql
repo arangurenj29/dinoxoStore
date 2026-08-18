@@ -119,10 +119,11 @@ select policies_are(
   'public',
   'products',
   array[
-    'Public reads published products',
-    'Authenticated reads published products or admin catalog',
+    'Active admins delete products',
     'Active admins insert products',
-    'Active admins update products'
+    'Active admins update products',
+    'Authenticated reads published products or admin catalog',
+    'Public reads published products'
   ]
 );
 select policies_are(

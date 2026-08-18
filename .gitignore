@@ -27,6 +27,8 @@ outputs/
 tmp/
 brand/tools/__pycache__/
 *.py[cod]
+*.log
+dev-server.log
 
 # Editors
 .idea/
